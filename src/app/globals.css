@@ -1,3 +1,37 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.card {
+    @apply border border-black bg-white shadow p-1 md:p-3;
+}
+
+.btn {
+    @apply px-4 py-1 border border-transparent font-bold leading-normal tracking-wide text-base;
+}
+
+.btn-sm {
+    @apply px-3 py-1 text-sm;
+}
+
+.btn-primary-outline {
+    @apply border-2 border-black text-black bg-transparent;
+}
+
+.btn-primary-outline:hover {
+    @apply bg-red text-white;
+}
+
+.prose {
+    ul > li::before {
+        background: black;
+    }
+
+    blockquote {
+        border-left-color: #CBCBCB;
+    }
+
+    pre {
+        @apply rounded-none;
+    }
+}
