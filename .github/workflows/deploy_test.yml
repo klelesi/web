@@ -1,0 +1,48 @@
+name: Deploy to test
+run-name: Deploy to test
+on:
+  push:
+    branches:
+      - develop
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22
+          cache: 'npm'
+          cache-dependency-path: ./package-lock.json
+      - name: Build project
+        run: |
+          npm ci
+          npm run build
+        env:
+          NEXT_PUBLIC_API_URL: ${{ secrets.DEPLOY_TEST_API_URL }}
+      - name: Rsync dist to server
+        uses: burnett01/rsync-deployments@5.2.1
+        with:
+          switches: -avzr --delete
+          remote_path: ${{ secrets.DEPLOY_TEST_PATH }}/build
+          remote_host: ${{ secrets.DEPLOY_TEST_HOST }}
+          remote_user: ${{ secrets.DEPLOY_TEST_USER }}
+          remote_key: ${{ secrets.DEPLOY_TEST_KEY }}
+      - name: Deploy
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.DEPLOY_TEST_HOST }}
+          username: ${{ secrets.DEPLOY_TEST_USER }}
+          key: ${{ secrets.DEPLOY_TEST_KEY }}
+          script: |
+            cd ${{ secrets.DEPLOY_TEST_PATH }}
+           
+            rm -rf live
+            cp -r build live
+            rm -rf build
+      - name: Notify via slack
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
