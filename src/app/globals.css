@@ -35,3 +35,15 @@
         @apply rounded-none;
     }
 }
+
+label {
+    @apply text-base;
+
+    input {
+        @apply text-base bg-white border-2 border-black px-3 py-2 w-full block ;
+    }
+
+    textarea:disabled, input:disabled, select:disabled {
+        @apply bg-light-gray text-dark-gray cursor-not-allowed;
+    }
+}
