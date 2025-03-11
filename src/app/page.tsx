@@ -6,7 +6,7 @@ import {PostCard} from "@/components/post-card";
 import {NextPage} from "@/components/next-page";
 
 export default async function Home() {
-    const posts = await fetch(process.env.NEXT_PUBLIC_API_URL + '/api/feed');
+    const posts = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/feed`);
     const data: PaginatedResult<Post> = await posts.json();
 
     return (
