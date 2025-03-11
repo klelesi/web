@@ -14,6 +14,23 @@
     @apply px-3 py-1 text-sm;
 }
 
+.btn-primary {
+    position: relative;
+    @apply border-2 border-black text-white bg-red;
+    box-shadow: 4px 4px rgba(0, 0, 0, 0.15);
+}
+
+.btn-primary:hover:not(:disabled) {
+    top: 2px;
+    left: 2px;
+    box-shadow: 2px 2px rgba(0, 0, 0, 0.15);;
+}
+
+.btn-primary:disabled {
+    @apply cursor-not-allowed border-black text-white;
+    background-color: theme('colors.gray');
+}
+
 .btn-primary-outline {
     @apply border-2 border-black text-black bg-transparent;
 }
@@ -45,5 +62,34 @@ label {
 
     textarea:disabled, input:disabled, select:disabled {
         @apply bg-light-gray text-dark-gray cursor-not-allowed;
+    }
+}
+
+textarea:focus-visible, input:focus-visible, select:focus-visible {
+    outline: theme('colors.red') solid 2px;
+    outline-offset: 3px;
+}
+
+textarea:disabled, input:disabled, select:disabled {
+    @apply bg-gray cursor-not-allowed;
+}
+
+.skeleton {
+    background-image: linear-gradient(to right, #f6f7f8 10%, #dddddd 20%, #f6f7f8 20%, #f6f7f8 25%);
+    background-size: 1000px 100%;
+    animation-duration: 1.5s;
+    animation-fill-mode: both;
+    animation-iteration-count: infinite;
+    animation-name: shimmer;
+    animation-timing-function: linear;
+}
+
+@keyframes shimmer {
+    from {
+        background-position: -1000px;
+    }
+
+    to {
+        background-position: 0;
     }
 }

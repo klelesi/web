@@ -21,6 +21,7 @@ export default function Navbar() {
                         <Link className={'mx-2 hover:underline'} href={'https://blog.klele.si'}>Devlog</Link>
 
                         {isLoggedIn && (<>
+                            <Link className={'mx-2 btn-primary btn'} href={'/objava'}>Objavi prispevek</Link>
                             <Link className={'mx-2 hover:underline'} href={'/profil'}>Profil</Link>
                             <button className={'mx-2 btn btn-sm btn-primary-outline'} onClick={() => logout()}>Odjava
                             </button>
