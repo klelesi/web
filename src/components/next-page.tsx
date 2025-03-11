@@ -4,6 +4,7 @@ import React, {useEffect, useState} from 'react';
 import {useIntersectionObserver} from 'react-intersection-observer-hook';
 import PostList from "@/components/post-list";
 import {PaginatedResult, Post} from "@/interfaces.js";
+import Shimmer from "@/components/shimmer";
 
 enum State {
     HIDDEN,
@@ -32,9 +33,15 @@ export const NextPage = ({cursor}: { cursor: string | null }) => {
         return;
     }
 
-    return <div ref={ref}>
+    return  <>
+        <div ref={ref} className={'absolute'}></div>
+        {state === State.LOADING && (<>
+           <Shimmer height={'3rem'} />
+        </>)}
         {state === State.RESOLVED && (<>
             <PostList posts={data.data}></PostList><NextPage cursor={data.meta.nextCursor}/>
         </>)}
-    </div>
+    </>
+
+
 }

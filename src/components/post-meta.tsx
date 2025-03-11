@@ -1,11 +1,7 @@
-import {parseISO} from "date-fns/fp/parseISO";
-import {format} from "date-fns";
+import {humanReadableDate} from "@/utils";
 
 export const PostMeta = ({author, createdAt}: { author: { name: string }, createdAt: string }) => {
-    const cleanedCreatedAt = createdAt.replace(/\.\d+Z$/, 'Z');
-    const date = parseISO(cleanedCreatedAt);
-
-    return <div className={'text-dark-gray'}>
-        {author.name} - {format(date, "dd.MM.y 'ob' HH:mm")}
+    return <div className={'text-dark-gray text-sm tracking-tight'}>
+        {author.name} - {humanReadableDate(createdAt)}
     </div>
 }

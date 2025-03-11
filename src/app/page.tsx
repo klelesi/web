@@ -1,10 +1,13 @@
 import Image from 'next/image'
 import Logo from "@/components/logo";
 import {Card} from "@/components/card";
+import {PaginatedResult, Post} from "@/interfaces";
+import {PostCard} from "@/components/post-card";
+import {NextPage} from "@/components/next-page";
 
 export default async function Home() {
-    //const posts = await fetch(process.env.NEXT_PUBLIC_API_URL + '/api/feed');
-    //const data: PaginatedResult<Post> = await posts.json();
+    const posts = await fetch(process.env.NEXT_PUBLIC_API_URL + '/api/feed');
+    const data: PaginatedResult<Post> = await posts.json();
 
     return (
         <div>
@@ -25,22 +28,24 @@ export default async function Home() {
                         </div>
                     </div>
                 </div>
-                <div className="grid grid-cols-1 gap-3 container max-w-[700px] prose">
-                   <ComingSoon></ComingSoon>
+                <div className="grid grid-cols-1 gap-3 container max-w-[700px]">
+                    {data.data.length === 0 && (<EmptyState>
+                        <div className="prose"><p>Trenutno ni prispevkov.</p><p>Nerodno.</p></div>
+                    </EmptyState>)}
+
+                    {data.data.map((post) => <div key={post.id}><PostCard post={post}/></div>)}
+
+                    {data.meta.nextCursor && (<NextPage cursor={data.meta.nextCursor}/>)}
                 </div>
             </main>
         </div>
     );
 }
 
-function ComingSoon(){
+function EmptyState({children}) {
     return <Card>
-        <div className="text-center py-10">
-            <h1 className={'text-3xl font-semibold text-center mb-6'}>Prihaja kmalu!</h1>
-
-            <p>Trenutno v razvoju. Lahko slediš na <a href="https://github.com/klelesi">Github</a>, ali na <a href="https://blog.klele.si">blog.klele.si</a>.</p>
-
-            <p className="text-sm">Če te zanimajo plače, obišči <a href="/place">plače</a>.</p>
+        <div className="text-center py-10 text-lg">
+            {children}
         </div>
     </Card>
 }

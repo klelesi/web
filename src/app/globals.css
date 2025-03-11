@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .card {
-    @apply border border-black bg-white shadow p-1 md:p-3;
+    @apply border border-black bg-white shadow p-3;
 }
 
 .btn {
