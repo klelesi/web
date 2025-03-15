@@ -39,6 +39,12 @@
     @apply bg-red text-white;
 }
 
+.btn-primary-outline:disabled {
+    @apply cursor-not-allowed border-gray text-gray;
+    background-color: white;
+}
+
+
 .prose {
     ul > li::before {
         background: black;

@@ -13,12 +13,19 @@ export default function useAuth() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [auth, setAuth] = useState(null);
 
+    const clearAuth = () => {
+        setIsLoggedIn(false);
+        setAuth(null);
+        localStorage.clear();
+        document.cookie.replace(/(?<=^|;).+?(?=\=|;|$)/g, name => location.hostname.split('.').reverse().reduce(domain => (domain=domain.replace(/^\.?[^.]+/, ''),document.cookie=`${name}=;max-age=0;path=/;domain=${domain}`,domain), location.hostname));
+    }
+
     useEffect(() => {
         //  Check for auth storage key
-        let auth = localStorage.getItem(STORAGE_KEY);
+        const storedAuth = localStorage.getItem(STORAGE_KEY);
 
-        if (auth) {
-            setAuth(JSON.parse(auth));
+        if (storedAuth) {
+            setAuth(JSON.parse(storedAuth));
             setIsLoggedIn(true);
         } else if (!!document.cookie.match(/^(.*;)?\s*logged_in\s*=\s*[^;]+(.*)?$/)) {
             client.get('/api/user').then((response) => response.data).then(response => {
@@ -39,5 +46,6 @@ export default function useAuth() {
         isLoggedIn,
         logout,
         auth,
+        clearAuth,
     }
 }

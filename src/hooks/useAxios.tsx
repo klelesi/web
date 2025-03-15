@@ -9,6 +9,7 @@ const instance = axios.create({
     withXSRFToken: true,
 });
 
+
 export default function useAxios() {
     return useCallback(instance, []);
 }

@@ -2,6 +2,7 @@ import {parseISO} from "date-fns/fp/parseISO";
 import {isToday} from "date-fns/isToday";
 import {isYesterday} from "date-fns/isYesterday";
 import {format} from "date-fns";
+import {Post} from "@/interfaces";
 
 export const getNumberOfCommentsText = (numberOfComments: number) => {
     let text = 'komentarjev';
@@ -28,4 +29,8 @@ export const humanReadableDate = (dateISO: string) => {
     }
 
     return format(date, formatString);
+}
+
+export const isAuthor = (auth, post: Post) => {
+    return auth && auth.id == post.author.id;
 }

@@ -1,4 +1,4 @@
-export default function FormInput(props: { label: string, type: string, name: string, value: any, onChange: Function, error: any, autocomplete?: string, disabled: boolean }) {
+export default function FormInput(props: { label: string, type: string, name: string, value: string, onChange: Function, error?: string, autocomplete?: string, disabled: boolean }) {
     const onFormInputChange = (event: any) => {
         props.onChange(props.name, event.target.value);
         event.preventDefault();

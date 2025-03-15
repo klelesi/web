@@ -5,6 +5,8 @@ import Logo from "./logo";
 import useAuth from "@/hooks/useAuth";
 
 export default function Navbar() {
+    'use client';
+
     const {isLoggedIn, logout} = useAuth();
 
     return (

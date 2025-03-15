@@ -5,12 +5,13 @@ import {Post, PostType} from "@/interfaces";
 import {PostMeta} from "@/components/post-meta";
 import AuthorActions from "@/components/author-actions";
 import {UnsafeHTML} from "@/components/unsafe-html";
+import {Comments} from "@/components/comments";
 
 const LinkPost = ({post}) => {
     return <div className={'flex flex-col'}>
         <div className="flex flex-row justify-between items-center">
             <PostMeta author={post.author} createdAt={post.createdAt}/>
-            <AuthorActions post={post}/>
+            <AuthorActions item={post}/>
         </div>
         <hr className={'my-2'}/>
 
@@ -42,7 +43,7 @@ const MarkdownPost = ({post}) => {
     return <div className={'flex flex-col'}>
         <div className="flex flex-row justify-between items-center">
             <PostMeta author={post.author} createdAt={post.createdAt}/>
-            <AuthorActions post={post}/>
+            <AuthorActions item={post}/>
         </div>
 
         <hr className={'my-2'}/>
@@ -64,6 +65,8 @@ export default async function Post({params}) {
             {post.postType == PostType.MARKDOWN ? <MarkdownPost post={post}/> : null}
             {post.postType == PostType.LINK ? <LinkPost post={post}/> : null}
         </Card>
+
+        <Comments post={post}/>
     </div>
 }
 

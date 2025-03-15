@@ -2,26 +2,27 @@ import Shimmer from "./shimmer";
 import {useState} from "react";
 import {UnsafeHTML} from "@/components/unsafe-html";
 import useAxios from "@/hooks/useAxios";
-import {AxiosError} from "axios";
 import {Card} from "@/components/card";
 
-export default function FormMarkdown(props: { label: string, name: string, value: any, onChange: Function, error: any, autocomplete?: string, disabled: boolean }) {
+export default function FormMarkdown(props: { label: string, name: string, value: string, onChange: Function, error?: string, autocomplete?: string, disabled: boolean }) {
     const client = useAxios();
 
     const [inPreview, setInPreview] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [previewHtml, setPreviewHtml] = useState('');
 
-    const showPreview = (event:any ) => {
+    const showPreview = (event: Event ) => {
         event.preventDefault();
         setInPreview(true);
         setIsLoading(true);
 
-        client.post(`/api/markdown`, {markdown: props.value}).then((response) => response.data.data).then((res) => {
-                setPreviewHtml(res.html);
-                setIsLoading(false);
-            }
-        )
+        client.get('/sanctum/csrf-cookie').then(() => {
+            client.post(`/api/markdown`, {markdown: props.value}).then((response) => response.data.data).then((res: any) => {
+                    setPreviewHtml(res.html);
+                    setIsLoading(false);
+                }
+            )
+        });
     }
 
     const hidePreview = (event:any ) => {

@@ -1,3 +1,5 @@
+import {Card} from "@/components/card";
+
 export const LoginNotice = () => {
-    return <>Dej se prijav, preden to narediš.</>
+    return <Card>Dej se prijav, preden to narediš.</Card>
 }
