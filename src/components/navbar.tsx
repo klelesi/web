@@ -2,21 +2,13 @@
 
 import Link from 'next/link'
 import Logo from "./logo";
-import useAuth from "@/hooks/useAuth";
 import useUserApi from "@/hooks/useUserApi";
-import {useRouter} from "next/navigation";
+import {useContext} from "react";
+import {AuthContext} from "@/components/auth-provider";
 
 export default function Navbar() {
-    const {logout} = useUserApi();
-    const {isLoggedIn} = useAuth();
-
-    function doLogout() {
-        logout().then(() => {
-            window.location.href = window.location.href;
-        }, () => {
-            window.location.href = window.location.href;
-        });
-    }
+   // const {logout} = useUserApi();
+    const {currentUser, logoutUser } = useContext(AuthContext);
 
     return (
         <>
@@ -31,14 +23,14 @@ export default function Navbar() {
                         <Link className={'mx-2 hover:underline'} href={'/place'}>Plače</Link>
                         <Link className={'mx-2 hover:underline'} href={'https://blog.klele.si'}>Devlog</Link>
 
-                        {isLoggedIn && (<>
+                        {currentUser && (<>
                             <Link className={'mx-2 btn-primary btn'} href={'/objava'}>Objavi prispevek</Link>
                             <Link className={'mx-2 hover:underline'} href={'/profil'}>Profil</Link>
-                            <button className={'mx-2 btn btn-sm btn-primary-outline'} onClick={() => doLogout()}>Odjava
+                            <button className={'mx-2 btn btn-sm btn-primary-outline'} onClick={() => logoutUser()}>Odjava
                             </button>
                         </>)}
 
-                        {!isLoggedIn && (<>
+                        {!currentUser && (<>
                             <Link className={'mx-2 btn btn-sm btn-primary-outline'} href={'/prijava'}>Prijava</Link>
                         </>)}
                     </div>

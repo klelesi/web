@@ -5,6 +5,7 @@ import Navbar from "@/components/navbar";
 import {config} from '@fortawesome/fontawesome-svg-core'
 import '@fortawesome/fontawesome-svg-core/styles.css'
 import Footer from "@/components/footer";
+import {Providers} from "@/components/providers";
 
 config.autoAddCss = false
 
@@ -13,11 +14,8 @@ export const metadata: Metadata = {
     description: "Kjer so dobre debate doma.",
 };
 
-export default function RootLayout({
-                                       children,
-                                   }: Readonly<{
-    children: React.ReactNode;
-}>) {
+
+export default function RootLayout({children,}: Readonly<{ children: React.ReactNode; }>) {
     return (
         <html lang="sl_SI">
         <head>
@@ -28,13 +26,15 @@ export default function RootLayout({
                 href="https://fonts.googleapis.com/css2?family=Kulim+Park:wght@400;600;700&display=swap"
                 rel="stylesheet"/>
         </head>
-        <body className={'sans bg-beige h-screen overflow-none flex flex-col'}>
-        <Navbar/>
-        <div className="flex-1 pb-3 overflow-auto">
-            {children}
-        </div>
-        <Footer/>
-        </body>
+        <Providers>
+            <body className={'sans bg-beige h-screen overflow-none flex flex-col'}>
+            <Navbar/>
+            <div className="flex-1 pb-3 overflow-auto">
+                {children}
+            </div>
+            <Footer/>
+            </body>
+        </Providers>
         </html>
     );
 }

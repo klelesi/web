@@ -4,10 +4,10 @@ import {Card} from "@/components/card";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faGithub} from "@fortawesome/free-brands-svg-icons/faGithub";
 import Shimmer from "@/components/shimmer";
-import {useEffect, useState} from "react";
-import useAuth from "@/hooks/useAuth";
+import {useContext, useEffect, useState} from "react";
 import {useRouter} from "next/navigation";
 import useUserApi from "@/hooks/useUserApi";
+import {AuthContext} from "@/components/auth-provider";
 
 enum State {
     CHECKING,
@@ -16,15 +16,15 @@ enum State {
 
 export default function Login() {
     const [state, setState] = useState(State.CHECKING);
-    const {login} = useAuth();
+    const {loginUser} = useContext(AuthContext);
     const {getProfile} = useUserApi();
     const router = useRouter();
 
     const checkLogin = () => {
         getProfile().then((success) => {
-            login(success.data.data);
+            loginUser(success.data.data);
             router.push('/');
-        }, (error) => {
+        }, (_) => {
             setState(State.IDLE);
         });
     }

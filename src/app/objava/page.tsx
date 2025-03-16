@@ -4,10 +4,9 @@ import {Card} from "@/components/card";
 import {faLink, faFile} from "@fortawesome/free-solid-svg-icons";
 import {z} from "zod";
 
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import useAxios from "@/hooks/useAxios";
 import {AxiosError} from "axios";
-import useAuth from "@/hooks/useAuth";
 import {LoginNotice} from "@/components/login-notice";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import FormInput from "@/components/form-input";
@@ -18,6 +17,7 @@ import {Post, PostType} from "@/interfaces";
 import Shimmer from "@/components/shimmer";
 import {isAuthor} from "@/utils";
 import {AccessDeniedNotice} from "@/components/access-denied-notice";
+import {AuthContext} from "@/components/auth-provider";
 
 
 const postSchema = z.discriminatedUnion('postType', [
@@ -145,9 +145,7 @@ enum ViewState {
 }
 
 export default function SubmitPost() {
-    'use client';
-
-    const {isLoggedIn, auth} = useAuth();
+    const {currentUser} = useContext(AuthContext);
     const params = useSearchParams()
     const id: string | null = params.get('id');
     const client = useAxios();
@@ -155,7 +153,7 @@ export default function SubmitPost() {
     const [currentViewState, setCurrentViewState] = useState(ViewState.LOADING);
 
     useEffect(() => {
-        if (!isLoggedIn) {
+        if (!currentUser) {
             setCurrentViewState(ViewState.NOT_LOGGED_IN);
         } else {
             if (!id) {
@@ -172,7 +170,7 @@ export default function SubmitPost() {
             }
         }
 
-    }, [id, isLoggedIn]);
+    }, [id, currentUser]);
 
     return (
         <div>

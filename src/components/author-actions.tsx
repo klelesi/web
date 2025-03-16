@@ -1,12 +1,13 @@
 'use client';
 
-import useAuth from "@/hooks/useAuth";
 import {isAuthor} from "@/utils";
+import {useContext} from "react";
+import {AuthContext} from "@/components/auth-provider";
 
 export default function AuthorActions({item}) {
-    const {auth, isLoggedIn} = useAuth();
+    const {currentUser} = useContext(AuthContext);
 
-    if(isLoggedIn && isAuthor(auth, item)){
+    if(currentUser && isAuthor(currentUser, item)){
         return <div className="flex flex-row">
             <a href={`/objava?id=${item.id}`}>
                 <button className="btn-sm btn-primary-outline">Uredi</button>

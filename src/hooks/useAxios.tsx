@@ -1,8 +1,8 @@
 'use client'
 
 import axios, {AxiosError} from "axios";
-import {useCallback, useMemo} from "react";
-import useAuth from "@/hooks/useAuth";
+import {useContext, useEffect, useMemo} from "react";
+import {AuthContext} from "@/components/auth-provider";
 
 const instance = axios.create({
     baseURL: process.env.NEXT_PUBLIC_API_URL,
@@ -11,16 +11,18 @@ const instance = axios.create({
 });
 
 export default function useAxios() {
-    const {clearAuth} = useAuth();
+    const {clear} = useContext(AuthContext);
 
-    return useMemo(() => {
+    useEffect(() => {
         instance.interceptors.response.use(res => res, (error: AxiosError) => {
             if (error.status === 401) {
-                clearAuth();
+                clear();
             }
             throw error;
         });
+    }, []);
 
+    return useMemo(() => {
         return instance;
     }, []);
 }

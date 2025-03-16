@@ -1,13 +1,13 @@
 'use client';
 
-import useAuth from "@/hooks/useAuth";
 import {LoginNotice} from "@/components/login-notice";
 import Post from "@/app/guna/[slug]/page";
 import FormMarkdown from "@/components/form-markdown";
 import {z} from "zod";
-import {useState} from "react";
+import {useContext, useState} from "react";
 import useAxios from "@/hooks/useAxios";
 import {Comment} from "@/interfaces";
+import {AuthContext} from "@/components/auth-provider";
 
 const commentForm = z.object({
     markdown: z.string().min(1),
@@ -22,7 +22,7 @@ export function CommentInput({post, comment, parentId, onSuccess}: {
     const client = useAxios();
     const [form, setForm] = useState({markdown: comment?.markdown ?? ''});
     const [isLoading, setIsLoading] = useState(false);
-    const {isLoggedIn} = useAuth();
+    const {currentUser} = useContext(AuthContext);
 
     function onChange(prop, value) {
         setForm((prev) => {
@@ -37,7 +37,7 @@ export function CommentInput({post, comment, parentId, onSuccess}: {
         setIsLoading(true);
 
         client.get('/sanctum/csrf-cookie').then(() => {
-            if(!comment){
+            if (!comment) {
                 client.post('/api/comments', {
                     postId: post.id,
                     markdown: form.markdown,
@@ -67,15 +67,15 @@ export function CommentInput({post, comment, parentId, onSuccess}: {
     }
 
     return <div>
-        {!isLoggedIn ? <LoginNotice/> : null}
+        {!currentUser ? <LoginNotice/> : null}
 
-        {isLoggedIn ? <>
+        {currentUser ? <>
             <form action="" onSubmit={(event) => submit(event)}>
                 <FormMarkdown label={''} name={'markdown'} value={form.markdown} onChange={onChange}
                               disabled={isLoading}/>
                 <div className="mt-2 text-right">
                     <button type={'submit'} disabled={isLoading || !commentForm.safeParse(form).success}
-                            className="btn btn-primary">{ comment ? 'Posodobi komentar' : 'Objavi komentar'}
+                            className="btn btn-primary">{comment ? 'Posodobi komentar' : 'Objavi komentar'}
                     </button>
                 </div>
             </form>
