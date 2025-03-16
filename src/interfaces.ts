@@ -1,7 +1,12 @@
-
 export enum PostType {
     MARKDOWN = 0,
     LINK = 1,
+}
+
+export interface Auth {
+    id: string;
+    email: string;
+    name: string;
 }
 
 export interface Post {
@@ -9,8 +14,8 @@ export interface Post {
     slug: string;
     postType: PostType,
     title: string,
-    markdown?:string,
-    url?:string,
+    markdown?: string,
+    url?: string,
     urlHost?: string,
     numberOfComments: number;
     author: {
@@ -29,7 +34,7 @@ export interface Comment {
         name: string;
     }
     html: string;
-    markdown?:string,
+    markdown?: string,
     comments: Comment[],
     createdAt: string;
     updatedAt: string;

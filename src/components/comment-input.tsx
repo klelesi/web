@@ -19,13 +19,9 @@ export function CommentInput({post, comment, parentId, onSuccess}: {
     parentId?: string | null,
     onSuccess: (comment: Comment) => (comment: Comment) => void
 }) {
-    'use client';
-
     const client = useAxios();
     const [form, setForm] = useState({markdown: comment?.markdown ?? ''});
     const [isLoading, setIsLoading] = useState(false);
-
-
     const {isLoggedIn} = useAuth();
 
     function onChange(prop, value) {
@@ -39,7 +35,6 @@ export function CommentInput({post, comment, parentId, onSuccess}: {
     function submit(event) {
         event.preventDefault();
         setIsLoading(true);
-
 
         client.get('/sanctum/csrf-cookie').then(() => {
             if(!comment){

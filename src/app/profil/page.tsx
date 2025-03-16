@@ -6,6 +6,7 @@ import useAxios from "@/hooks/useAxios";
 import {AxiosError} from "axios";
 import {Loader} from "@/components/loader";
 import {ShowError} from "@/components/show-error";
+import useUserApi from "@/hooks/useUserApi";
 
 enum State {
     LOADING,
@@ -14,14 +15,14 @@ enum State {
 }
 
 export default function Profile() {
-    const client = useAxios();
+    const {getProfile} = useUserApi();
     const [state, setState] = useState(State.LOADING);
-    const [profile, setProfile] = useState<{id:string, name: string, email:string}|undefined>();
-    const [error, setError] = useState<AxiosError|undefined>();
+    const [profile, setProfile] = useState<{ id: string, name: string, email: string } | undefined>();
+    const [error, setError] = useState<AxiosError | undefined>();
 
     useEffect(() => {
-        client.get(`/api/user`).then((response) => response.data.data).then((profile) => {
-                setProfile(profile as {id:string, name: string, email:string});
+        getProfile().then((response) => response.data.data).then((profile) => {
+                setProfile(profile as { id: string, name: string, email: string });
                 setState(State.SHOWING);
             },
             (error: AxiosError) => {

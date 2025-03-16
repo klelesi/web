@@ -3,11 +3,20 @@
 import Link from 'next/link'
 import Logo from "./logo";
 import useAuth from "@/hooks/useAuth";
+import useUserApi from "@/hooks/useUserApi";
+import {useRouter} from "next/navigation";
 
 export default function Navbar() {
-    'use client';
+    const {logout} = useUserApi();
+    const {isLoggedIn} = useAuth();
 
-    const {isLoggedIn, logout} = useAuth();
+    function doLogout() {
+        logout().then(() => {
+            window.location.href = window.location.href;
+        }, () => {
+            window.location.href = window.location.href;
+        });
+    }
 
     return (
         <>
@@ -25,7 +34,7 @@ export default function Navbar() {
                         {isLoggedIn && (<>
                             <Link className={'mx-2 btn-primary btn'} href={'/objava'}>Objavi prispevek</Link>
                             <Link className={'mx-2 hover:underline'} href={'/profil'}>Profil</Link>
-                            <button className={'mx-2 btn btn-sm btn-primary-outline'} onClick={() => logout()}>Odjava
+                            <button className={'mx-2 btn btn-sm btn-primary-outline'} onClick={() => doLogout()}>Odjava
                             </button>
                         </>)}
 

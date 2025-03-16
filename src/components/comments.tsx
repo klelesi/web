@@ -9,7 +9,6 @@ import {useState} from "react";
 export function Comments({post}: { post: Post }) {
     const [storedPost, setStoredPost] = useState<Post>(post);
 
-
     const addComment = (comment: Comment) => {
         setStoredPost((prev) => {
             const copy: Post = {...prev};
