@@ -7,9 +7,9 @@ import {PostMeta} from "@/components/post-meta";
 import {UnsafeHTML} from "@/components/unsafe-html";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faComments} from "@fortawesome/free-solid-svg-icons";
-import {CommentForm} from "@/components/comment-form";
+import {CommentForm} from "@/app/guna/[slug]/components/comment-form";
 import {isCurrentUserAuthor} from "@/utils";
-import {AuthContext} from "@/components/auth-provider";
+import {AuthContext} from "@/hooks/auth-provider";
 
 enum State {
     IDLE,

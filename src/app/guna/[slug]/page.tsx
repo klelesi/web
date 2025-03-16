@@ -1,8 +1,8 @@
 import {Card} from "@/components/card";
 import {PostType} from "@/interfaces";
 import {PostComments} from "@/components/post-comments";
-import {MarkdownPost} from "@/components/posts/markdown-post";
-import {LinkPost} from "@/components/posts/link-post";
+import {MarkdownPost} from "@/app/guna/[slug]/components/markdown-post";
+import {LinkPost} from "@/app/guna/[slug]/components/link-post";
 
 export default async function Post({params}: {params: Promise<{slug:string}>}) {
     const {slug} = await params;

@@ -16,7 +16,7 @@ import {Post, PostType} from "@/interfaces";
 import Shimmer from "@/components/shimmer";
 import {isCurrentUserAuthor} from "@/utils";
 import {AccessDeniedNotice} from "@/components/access-denied-notice";
-import {AuthContext} from "@/components/auth-provider";
+import {AuthContext} from "@/hooks/auth-provider";
 import {Suspense} from 'react'
 
 

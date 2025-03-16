@@ -2,7 +2,7 @@
 
 import {isCurrentUserAuthor} from "@/utils";
 import {useContext} from "react";
-import {AuthContext} from "@/components/auth-provider";
+import {AuthContext} from "@/hooks/auth-provider";
 import {Post} from "@/interfaces";
 
 export default function PostAuthorActions({item}: { item: Post }) {

@@ -2,7 +2,7 @@
 
 import axios, {AxiosError} from "axios";
 import {useContext, useEffect, useMemo} from "react";
-import {AuthContext} from "@/components/auth-provider";
+import {AuthContext} from "@/hooks/auth-provider";
 
 const instance = axios.create({
     baseURL: process.env.NEXT_PUBLIC_API_URL,

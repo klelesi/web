@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import Logo from "./logo";
 import {useContext} from "react";
-import {AuthContext} from "@/components/auth-provider";
+import {AuthContext} from "@/hooks/auth-provider";
 
 export default function Navbar() {
     const {currentUser, logoutUser } = useContext(AuthContext);

@@ -7,7 +7,7 @@ import Shimmer from "@/components/shimmer";
 import {useContext, useEffect, useState} from "react";
 import {useRouter} from "next/navigation";
 import useUserApi from "@/hooks/useUserApi";
-import {AuthContext} from "@/components/auth-provider";
+import {AuthContext} from "@/hooks/auth-provider";
 
 enum State {
     CHECKING,

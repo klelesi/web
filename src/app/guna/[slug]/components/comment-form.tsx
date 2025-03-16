@@ -5,7 +5,7 @@ import {z} from "zod";
 import {FormEvent, useContext, useState} from "react";
 import useClientAxios from "@/hooks/useClientAxios";
 import {Comment, Post} from "@/interfaces";
-import {AuthContext} from "@/components/auth-provider";
+import {AuthContext} from "@/hooks/auth-provider";
 import {NotificationCard} from "@/components/notification-card";
 
 const commentForm = z.object({
