@@ -1,11 +1,11 @@
 import Shimmer from "./shimmer";
 import {useState} from "react";
 import {UnsafeHTML} from "@/components/unsafe-html";
-import useAxios from "@/hooks/useAxios";
+import useClientAxios from "@/hooks/useClientAxios";
 import {Card} from "@/components/card";
 
-export default function FormMarkdown(props: { label: string, name: string, value: string, onChange: Function, error?: string, autocomplete?: string, disabled: boolean }) {
-    const client = useAxios();
+export default function FormMarkdown(props: { label: string, name: string, value: string, onChange: Function, error?: string, autocomplete?: string, disabled: boolean, rows?: number }) {
+    const client = useClientAxios();
 
     const [inPreview, setInPreview] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
@@ -43,12 +43,14 @@ export default function FormMarkdown(props: { label: string, name: string, value
                 {
                     inPreview ? (
                             isLoading ? <Shimmer height={'5rem'}/> : <Card>
-                                <UnsafeHTML html={previewHtml}/>
+                                <div className="prose">
+                                    <UnsafeHTML html={previewHtml}/>
+                                </div>
                             </Card>
                         )  :
                         <textarea
                             className={'w-full block border p-2 ' + (props.error ? ' text-error border-error bg-error-washed' : ' text-black border-black ')}
-                            rows={18}
+                            rows={props.rows ?? 18}
                             disabled={props.disabled}
                             value={props.value}
                             onChange={onFormInputChange}
@@ -60,7 +62,6 @@ export default function FormMarkdown(props: { label: string, name: string, value
             <p className="text-error mt-2">{props.error}</p>
 
             <div className="mt-4">
-
                 <div className={'mr-2 flex flex-row items-center'}>
                     {!inPreview ? <button className="btn btn-sm btn-primary-outline mr-2" onClick={showPreview}
                                           disabled={props.value.trim().length === 0}>Predogled

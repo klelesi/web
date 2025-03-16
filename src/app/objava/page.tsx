@@ -5,7 +5,7 @@ import {faLink, faFile} from "@fortawesome/free-solid-svg-icons";
 import {z} from "zod";
 
 import {useContext, useEffect, useState} from "react";
-import useAxios from "@/hooks/useAxios";
+import useClientAxios from "@/hooks/useClientAxios";
 import {AxiosError} from "axios";
 import {LoginNotice} from "@/components/login-notice";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -15,7 +15,7 @@ import MarkdownInstructions from "@/components/markdown-instructions";
 import {useRouter, useSearchParams} from "next/navigation";
 import {Post, PostType} from "@/interfaces";
 import Shimmer from "@/components/shimmer";
-import {isAuthor} from "@/utils";
+import {isCurrentUserAuthor} from "@/utils";
 import {AccessDeniedNotice} from "@/components/access-denied-notice";
 import {AuthContext} from "@/components/auth-provider";
 
@@ -34,7 +34,7 @@ const postSchema = z.discriminatedUnion('postType', [
 ]);
 
 const PostForm = ({post}: {post?: Post}) => {
-    const client = useAxios();
+    const client = useClientAxios();
     const router = useRouter();
 
     const postForm = post ? {postType: post.postType, title: post.title, markdown: post.markdown ?? '', url: post.url ?? ''} : {
@@ -148,7 +148,7 @@ export default function SubmitPost() {
     const {currentUser} = useContext(AuthContext);
     const params = useSearchParams()
     const id: string | null = params.get('id');
-    const client = useAxios();
+    const client = useClientAxios();
     const [post, setPost] = useState(null);
     const [currentViewState, setCurrentViewState] = useState(ViewState.LOADING);
 
@@ -160,7 +160,7 @@ export default function SubmitPost() {
                 setCurrentViewState(ViewState.NEW_POST);
             } else {
                 client.get(`${process.env.NEXT_PUBLIC_API_URL}/api/posts/${id}`).then(response => response.data).then((response) => {
-                    if (isAuthor(auth, response.data)) {
+                    if (isCurrentUserAuthor(auth, response.data)) {
                         setCurrentViewState(ViewState.EDIT_POST);
                         setPost(response.data);
                     } else {

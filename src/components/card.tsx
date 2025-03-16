@@ -1,6 +1,4 @@
-import {ReactNode} from "react";
-
-export const Card = ({children}: {children: ReactNode}) => {
+export const Card = ({children}) => {
     return <div className={'card'}>
         {children}
     </div>

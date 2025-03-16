@@ -46,3 +46,7 @@ export interface PaginatedResult<T> {
         nextCursor: string | null;
     }
 }
+
+export interface Result<T> {
+    data: T,
+}

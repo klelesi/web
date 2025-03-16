@@ -10,7 +10,7 @@ const instance = axios.create({
     withXSRFToken: true,
 });
 
-export default function useAxios() {
+export default function useClientAxios() {
     const {clear} = useContext(AuthContext);
 
     useEffect(() => {

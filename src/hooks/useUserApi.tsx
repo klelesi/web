@@ -1,7 +1,7 @@
-import useAxios from "@/hooks/useAxios";
+import useClientAxios from "@/hooks/useClientAxios";
 
 export default function useUserApi() {
-    const client = useAxios();
+    const client = useClientAxios();
 
     const getProfile = () => {
         return client.get('/api/user');
