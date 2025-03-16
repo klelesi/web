@@ -15,8 +15,13 @@ export interface Post {
     postType: PostType,
     title: string,
     markdown?: string,
+    html?: string,
     url?: string,
     urlHost?: string,
+    urlMeta?: {
+        openGraph: { [key: string]: string }
+        [key: string]: unknown
+    },
     numberOfComments: number;
     author: {
         id: string;

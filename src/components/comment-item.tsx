@@ -1,6 +1,6 @@
 'use client';
 
-import {Comment} from "@/interfaces";
+import {Comment, Post} from "@/interfaces";
 import {useContext, useState} from "react";
 import {Card} from "@/components/card";
 import {PostMeta} from "@/components/post-meta";
@@ -8,7 +8,6 @@ import {UnsafeHTML} from "@/components/unsafe-html";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faComments} from "@fortawesome/free-solid-svg-icons";
 import {CommentForm} from "@/components/comment-form";
-import Post from "@/app/guna/[slug]/page";
 import {isCurrentUserAuthor} from "@/utils";
 import {AuthContext} from "@/components/auth-provider";
 
@@ -31,7 +30,9 @@ export function CommentItem({comment, post}: { comment: Comment, post: Post }) {
             setLocalComment({...localComment, markdown: comment.markdown, html: comment.html});
 
         } else {
-            setLocalComment({...localComment, comments: [comment, ...localComment.comments]})
+            setLocalComment((prev) => {
+                return {...prev, comments: [comment, ...prev.comments]}
+            })
         }
 
         setCurrentState(State.IDLE);

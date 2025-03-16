@@ -1,7 +1,7 @@
-export const UnsafeHTML = ({ html }) => {
+export const UnsafeHTML = ({html}: { html?: string }) => {
     return (
         <>
-            <div className="prose" dangerouslySetInnerHTML={{__html: html}}/>
+            <div className="prose" dangerouslySetInnerHTML={{__html: html ?? ''}}/>
         </>
     );
 }

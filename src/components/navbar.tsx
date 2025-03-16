@@ -2,12 +2,10 @@
 
 import Link from 'next/link'
 import Logo from "./logo";
-import useUserApi from "@/hooks/useUserApi";
 import {useContext} from "react";
 import {AuthContext} from "@/components/auth-provider";
 
 export default function Navbar() {
-   // const {logout} = useUserApi();
     const {currentUser, logoutUser } = useContext(AuthContext);
 
     return (

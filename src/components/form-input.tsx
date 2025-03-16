@@ -1,5 +1,17 @@
-export default function FormInput(props: { label: string, type: string, name: string, value: string, onChange: Function, error?: string, autocomplete?: string, disabled: boolean }) {
-    const onFormInputChange = (event: any) => {
+import {ChangeEvent} from "react";
+
+export default function FormInput(props: {
+    label: string,
+    type: string,
+    name: string,
+    value: string,
+    onChange: (prop: string, value: string | number) => void,
+    error?: string,
+    autocomplete?: string,
+    disabled: boolean
+}) {
+    const onFormInputChange = (event: ChangeEvent) => {
+        // @ts-expect-error: wrong type for target
         props.onChange(props.name, event.target.value);
         event.preventDefault();
     }

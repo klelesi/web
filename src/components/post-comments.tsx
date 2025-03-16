@@ -7,14 +7,14 @@ import {CommentItem} from "@/components/comment-item";
 import {useState} from "react";
 import {NotificationCard} from "@/components/notification-card";
 
-const NewCommentSection = ({post, onCommentAdded}) => {
+const NewCommentSection = ({post, onCommentAdded}: { post: Post, onCommentAdded: (comment: Comment) => void }) => {
     return <>
         <h5 className={'text-xl font-bold my-2'}>Nov komentar</h5>
         <CommentForm onSuccess={(comment) => onCommentAdded(comment)} post={post}/>
     </>
 }
 
-const CommentsSection = ({post}) => {
+const CommentsSection = ({post}: { post: Post }) => {
     return <>
         <h2 className={'text-2xl font-bold mb-4'}>Komentarji ({post.numberOfComments})</h2>
 

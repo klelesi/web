@@ -3,8 +3,7 @@
 import {Card} from "@/components/card";
 import {faLink, faFile} from "@fortawesome/free-solid-svg-icons";
 import {z} from "zod";
-
-import {useContext, useEffect, useState} from "react";
+import {FormEvent, useContext, useEffect, useState} from "react";
 import useClientAxios from "@/hooks/useClientAxios";
 import {AxiosError} from "axios";
 import {LoginNotice} from "@/components/login-notice";
@@ -18,6 +17,7 @@ import Shimmer from "@/components/shimmer";
 import {isCurrentUserAuthor} from "@/utils";
 import {AccessDeniedNotice} from "@/components/access-denied-notice";
 import {AuthContext} from "@/components/auth-provider";
+import {Suspense} from 'react'
 
 
 const postSchema = z.discriminatedUnion('postType', [
@@ -33,11 +33,16 @@ const postSchema = z.discriminatedUnion('postType', [
     }),
 ]);
 
-const PostForm = ({post}: {post?: Post}) => {
+const PostForm = ({post}: { post?: Post | null }) => {
     const client = useClientAxios();
     const router = useRouter();
 
-    const postForm = post ? {postType: post.postType, title: post.title, markdown: post.markdown ?? '', url: post.url ?? ''} : {
+    const postForm = post ? {
+        postType: post.postType,
+        title: post.title,
+        markdown: post.markdown ?? '',
+        url: post.url ?? ''
+    } : {
         postType: PostType.MARKDOWN,
         title: '',
         markdown: '',
@@ -48,7 +53,7 @@ const PostForm = ({post}: {post?: Post}) => {
     const [errors, setErrors] = useState(postSchema.safeParse(form));
     const [isLoading, setIsLoading] = useState(false);
 
-    function submit(event) {
+    function submit(event: FormEvent<HTMLFormElement>) {
         setIsLoading(true);
         event.preventDefault();
 
@@ -62,8 +67,9 @@ const PostForm = ({post}: {post?: Post}) => {
         )
     }
 
-    function onFormChange(change, value) {
+    function onFormChange(change: string, value: string | number) {
         setForm((prev) => {
+            // @ts-expect-error: setting a prop via string type
             prev[change] = value;
             setErrors(postSchema.safeParse(prev));
             return {...prev};
@@ -144,7 +150,7 @@ enum ViewState {
     EDIT_POST,
 }
 
-export default function SubmitPost() {
+function SubmitPost() {
     const {currentUser} = useContext(AuthContext);
     const params = useSearchParams()
     const id: string | null = params.get('id');
@@ -160,7 +166,7 @@ export default function SubmitPost() {
                 setCurrentViewState(ViewState.NEW_POST);
             } else {
                 client.get(`${process.env.NEXT_PUBLIC_API_URL}/api/posts/${id}`).then(response => response.data).then((response) => {
-                    if (isCurrentUserAuthor(auth, response.data)) {
+                    if (isCurrentUserAuthor(currentUser, response.data)) {
                         setCurrentViewState(ViewState.EDIT_POST);
                         setPost(response.data);
                     } else {
@@ -172,18 +178,20 @@ export default function SubmitPost() {
 
     }, [id, currentUser]);
 
-    return (
-        <div>
-            <main className={'grid grid-cols-1 gap-3'}>
-                <div className="grid grid-cols-1 gap-3 container max-w-[700px] pt-3">
-                    {currentViewState === ViewState.LOADING ? <Shimmer width={'100%'} height={'4rem'}/> : null}
-                    {currentViewState === ViewState.NOT_LOGGED_IN ? <LoginNotice/> : null}
-                    {currentViewState === ViewState.NEW_POST ? <PostForm/> : null}
-                    {currentViewState === ViewState.EDIT_POST ? <PostForm post={post}/> : null}
-                    {currentViewState === ViewState.ACCESS_DENIED ? <AccessDeniedNotice/> : null}
-                </div>
-            </main>
+    return (<main className={'grid grid-cols-1 gap-3'}>
+        <div className="grid grid-cols-1 gap-3 container max-w-[700px] pt-3">
+            {currentViewState === ViewState.LOADING ? <Shimmer width={'100%'} height={'4rem'}/> : null}
+            {currentViewState === ViewState.NOT_LOGGED_IN ? <LoginNotice/> : null}
+            {currentViewState === ViewState.NEW_POST ? <PostForm/> : null}
+            {currentViewState === ViewState.EDIT_POST ? <PostForm post={post}/> : null}
+            {currentViewState === ViewState.ACCESS_DENIED ? <AccessDeniedNotice/> : null}
         </div>
-    );
+    </main>);
 }
 
+export default function Wrapper() {
+
+    return <Suspense>
+        <SubmitPost/>
+    </Suspense>
+}

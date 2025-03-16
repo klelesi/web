@@ -1,12 +1,10 @@
 'use client';
 
-import {LoginNotice} from "@/components/login-notice";
-import Post from "@/app/guna/[slug]/page";
 import FormMarkdown from "@/components/form-markdown";
 import {z} from "zod";
-import {useContext, useState} from "react";
+import {FormEvent, useContext, useState} from "react";
 import useClientAxios from "@/hooks/useClientAxios";
-import {Comment} from "@/interfaces";
+import {Comment, Post} from "@/interfaces";
 import {AuthContext} from "@/components/auth-provider";
 import {NotificationCard} from "@/components/notification-card";
 
@@ -25,15 +23,16 @@ export function CommentForm({post, comment, parentId, onSuccess}: {
     const [isLoading, setIsLoading] = useState(false);
     const {currentUser} = useContext(AuthContext);
 
-    function onChange(prop, value) {
+    function onChange(prop: string, value: string | number) {
         setForm((prev) => {
             const copy = {...prev};
+            // @ts-expect-error: setting a prop via string type
             copy[prop] = value;
             return copy;
         })
     }
 
-    function submit(event) {
+    function submit(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
         setIsLoading(true);
 

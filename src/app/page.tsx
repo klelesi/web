@@ -4,6 +4,7 @@ import {Card} from "@/components/card";
 import {PaginatedResult, Post} from "@/interfaces";
 import {PostCard} from "@/components/post-card";
 import {NextPage} from "@/components/next-page";
+import {ReactNode} from "react";
 
 export default async function Home() {
     const posts = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/feed`);
@@ -42,7 +43,7 @@ export default async function Home() {
     );
 }
 
-function EmptyState({children}) {
+function EmptyState({children}: {children: ReactNode}) {
     return <Card>
         <div className="text-center py-10 text-lg">
             {children}

@@ -15,7 +15,6 @@ const posts: Post[] = [
         id: 'place/2023',
         title: "Plače slovenskih razvijalcev 2023",
         slug: '/place/2023',
-        content: "",
         postType: 0,
         author: {
             name: 'Miha Medven',
@@ -26,7 +25,6 @@ const posts: Post[] = [
         id: 'place/2022',
         title: "Plače slovenskih razvijalcev 2022",
         slug: '/place/2022',
-        content: "",
         postType: 0,
         author: {
             name: 'Miha Medven',
@@ -37,7 +35,6 @@ const posts: Post[] = [
         id: 'place/2021',
         title: "Plače slovenskih razvijalcev 2021",
         slug: '/place/2021',
-        content: "",
         postType: 0,
         author: {
             name: 'Miha Medven',

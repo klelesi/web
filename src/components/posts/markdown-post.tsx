@@ -1,8 +1,9 @@
 import {PostMeta} from "@/components/post-meta";
 import PostAuthorActions from "@/components/post-author-actions";
 import {UnsafeHTML} from "@/components/unsafe-html";
+import {Post} from "@/interfaces";
 
-export const MarkdownPost = ({post}) => {
+export const MarkdownPost = ({post}: { post: Post }) => {
     return <div className={'flex flex-col'}>
         <div className="flex flex-row justify-between items-center">
             <PostMeta author={post.author} createdAt={post.createdAt}/>

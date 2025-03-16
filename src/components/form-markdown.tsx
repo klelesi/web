@@ -1,37 +1,46 @@
 import Shimmer from "./shimmer";
-import {useState} from "react";
+import {ChangeEvent, useState} from "react";
 import {UnsafeHTML} from "@/components/unsafe-html";
 import useClientAxios from "@/hooks/useClientAxios";
 import {Card} from "@/components/card";
+import {Post} from "@/interfaces";
 
-export default function FormMarkdown(props: { label: string, name: string, value: string, onChange: Function, error?: string, autocomplete?: string, disabled: boolean, rows?: number }) {
+export default function FormMarkdown(props: {
+    label: string,
+    name: string,
+    value: string,
+    onChange: (prop: string, value: string | number) => void,
+    error?: string,
+    autocomplete?: string,
+    disabled: boolean,
+    rows?: number
+}) {
     const client = useClientAxios();
 
     const [inPreview, setInPreview] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [previewHtml, setPreviewHtml] = useState('');
 
-    const showPreview = (event: Event ) => {
-        event.preventDefault();
+    const showPreview = () => {
         setInPreview(true);
         setIsLoading(true);
 
         client.get('/sanctum/csrf-cookie').then(() => {
-            client.post(`/api/markdown`, {markdown: props.value}).then((response) => response.data.data).then((res: any) => {
-                    setPreviewHtml(res.html);
+            client.post(`/api/markdown`, {markdown: props.value}).then((response) => response.data.data as Post).then((res: Post) => {
+                    setPreviewHtml(res.html!);
                     setIsLoading(false);
                 }
             )
         });
     }
 
-    const hidePreview = (event:any ) => {
-        event.preventDefault();
+    const hidePreview = () => {
         setInPreview(false);
         setIsLoading(false);
     }
 
-    const onFormInputChange = (event: any) => {
+    const onFormInputChange = (event: ChangeEvent) => {
+        // @ts-expect-error: wrong type for target
         props.onChange(props.name, event.target.value);
         event.preventDefault();
         setPreviewHtml('');
@@ -47,7 +56,7 @@ export default function FormMarkdown(props: { label: string, name: string, value
                                     <UnsafeHTML html={previewHtml}/>
                                 </div>
                             </Card>
-                        )  :
+                        ) :
                         <textarea
                             className={'w-full block border p-2 ' + (props.error ? ' text-error border-error bg-error-washed' : ' text-black border-black ')}
                             rows={props.rows ?? 18}
@@ -63,9 +72,12 @@ export default function FormMarkdown(props: { label: string, name: string, value
 
             <div className="mt-4">
                 <div className={'mr-2 flex flex-row items-center'}>
-                    {!inPreview ? <button className="btn btn-sm btn-primary-outline mr-2" onClick={showPreview}
+                    {!inPreview ? <button type={'button'} className="btn btn-sm btn-primary-outline mr-2"
+                                          onClick={() => showPreview()}
                                           disabled={props.value.trim().length === 0}>Predogled
-                    </button> : <button className="btn btn-sm btn-primary-outline mr-2" onClick={hidePreview}>Uredi</button>}
+                        </button> :
+                        <button type={'button'} className="btn btn-sm btn-primary-outline mr-2"
+                                onClick={() => hidePreview()}>Uredi</button>}
                     <p className="text-sm text-black opacity-50">Uporabljamo Markdown.</p>
                 </div>
             </div>

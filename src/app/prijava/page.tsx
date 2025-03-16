@@ -24,7 +24,7 @@ export default function Login() {
         getProfile().then((success) => {
             loginUser(success.data.data);
             router.push('/');
-        }, (_) => {
+        }, () => {
             setState(State.IDLE);
         });
     }

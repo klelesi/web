@@ -2,7 +2,6 @@
 
 import {Card} from "@/components/card";
 import {useEffect, useState} from "react";
-import useClientAxios from "@/hooks/useClientAxios";
 import {AxiosError} from "axios";
 import {Loader} from "@/components/loader";
 import {ShowError} from "@/components/show-error";

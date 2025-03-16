@@ -1,6 +1,6 @@
 'use client';
 
-import {createContext, useEffect, useState} from "react";
+import {createContext, ReactNode, useEffect, useState} from "react";
 import useUserApi from "@/hooks/useUserApi";
 import {Auth} from "@/interfaces";
 
@@ -11,16 +11,19 @@ export const AuthContext = createContext<{
     clear: () => void,
 }>({
     currentUser: null,
-    logoutUser: () => {},
-    loginUser: () => {},
-    clear: () => {},
+    logoutUser: () => {
+    },
+    loginUser: () => {
+    },
+    clear: () => {
+    },
 });
 
 const STORAGE_KEY = 'auth';
 
-export function AuthProvider({children}) {
+export function AuthProvider({children}: { children: ReactNode }) {
     const {logout} = useUserApi();
-    const [currentUser, setCurrentUser] = useState<Auth>(null)
+    const [currentUser, setCurrentUser] = useState<Auth|null>(null)
 
     useEffect(() => {
         const storedUser = getStoredUser();
@@ -41,7 +44,7 @@ export function AuthProvider({children}) {
     };
 
     const logoutUser = () => {
-        logout().then((_) => clear(), (_) => clear())
+        logout().then(() => clear(), () => clear())
     }
 
     const clear = () => {
