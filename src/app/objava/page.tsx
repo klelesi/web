@@ -15,9 +15,9 @@ import {useRouter, useSearchParams} from "next/navigation";
 import {Post, PostType} from "@/interfaces";
 import Shimmer from "@/components/shimmer";
 import {isCurrentUserAuthor} from "@/utils";
-import {AccessDeniedNotice} from "@/components/access-denied-notice";
 import {AuthContext} from "@/hooks/auth-provider";
 import {Suspense} from 'react'
+import {NotificationCard} from "@/components/notification-card";
 
 
 const postSchema = z.discriminatedUnion('postType', [
@@ -184,7 +184,8 @@ function SubmitPost() {
             {currentViewState === ViewState.NOT_LOGGED_IN ? <LoginNotice/> : null}
             {currentViewState === ViewState.NEW_POST ? <PostForm/> : null}
             {currentViewState === ViewState.EDIT_POST ? <PostForm post={post}/> : null}
-            {currentViewState === ViewState.ACCESS_DENIED ? <AccessDeniedNotice/> : null}
+            {currentViewState === ViewState.ACCESS_DENIED ? <NotificationCard title={'Nimaš pravic.'} body={'Glej,' +
+                ' tole ti ni tvoje, zato nimaš pravic tega urejati.'}/> : null}
         </div>
     </main>);
 }
