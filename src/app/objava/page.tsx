@@ -57,14 +57,25 @@ const PostForm = ({post}: { post?: Post | null }) => {
         setIsLoading(true);
         event.preventDefault();
 
-        client.post(`/api/posts`, postSchema.safeParse(form).data).then((response) => response.data.data as Post).then((post: Post) => {
-                router.push(post.slug);
-            },
-            (error: AxiosError) => {
-                setIsLoading(false);
-                alert(error.message);
-            }
-        )
+        if (post) {
+            client.put(`/api/posts/${post.id}`, postSchema.safeParse(form).data).then((response) => response.data.data as Post).then((post: Post) => {
+                    router.push(post.slug);
+                },
+                (error: AxiosError) => {
+                    setIsLoading(false);
+                    alert(error.message);
+                }
+            )
+        } else {
+            client.post(`/api/posts`, postSchema.safeParse(form).data).then((response) => response.data.data as Post).then((post: Post) => {
+                    router.push(post.slug);
+                },
+                (error: AxiosError) => {
+                    setIsLoading(false);
+                    alert(error.message);
+                }
+            )
+        }
     }
 
     function onFormChange(change: string, value: string | number) {
