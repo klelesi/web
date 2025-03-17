@@ -22,14 +22,10 @@ export function CommentItem({comment, post}: { comment: Comment, post: Post }) {
     const [localComment, setLocalComment] = useState(comment);
     const [currentState, setCurrentState] = useState(State.IDLE);
 
-    /*  const [isEditing, setIsEditing] = useState(false);
-      const [isShowing, setIsShowing] = useState(false);*/
-
     function updateComment(comment: Comment) {
-        if (localComment) {
+        if (currentState === State.EDITING) {
             setLocalComment({...localComment, markdown: comment.markdown, html: comment.html});
-
-        } else {
+        } else if (currentState === State.RESPONDING) {
             setLocalComment((prev) => {
                 return {...prev, comments: [comment, ...prev.comments]}
             })
