@@ -17,7 +17,7 @@ export default async function Home() {
             <main className={'grid grid-cols-1 gap-3'}>
                 <div className="w-full relative">
                     <Image
-                        className={'h-[200px] object-cover'}
+                        className={'h-[200px] object-cover w-full'}
                         width={1920}
                         height={200}
                         src="/images/header_frontpage.png"
