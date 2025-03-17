@@ -36,7 +36,7 @@ export function CommentForm({post, comment, parentId, onSuccess}: {
         event.preventDefault();
         setIsLoading(true);
 
-        client.get('/sanctum/csrf-cookie').then(() => {
+        client.get('/api/sanctum/csrf-cookie').then(() => {
             if (!comment) {
                 client.post('/api/comments', {
                     postId: post.id,
