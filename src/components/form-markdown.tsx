@@ -25,13 +25,11 @@ export default function FormMarkdown(props: {
         setInPreview(true);
         setIsLoading(true);
 
-        client.get('/api/sanctum/csrf-cookie').then(() => {
-            client.post(`/api/markdown`, {markdown: props.value}).then((response) => response.data.data as Post).then((res: Post) => {
-                    setPreviewHtml(res.html!);
-                    setIsLoading(false);
-                }
-            )
-        });
+        client.post(`/api/markdown`, {markdown: props.value}).then((response) => response.data.data as Post).then((res: Post) => {
+                setPreviewHtml(res.html!);
+                setIsLoading(false);
+            }
+        )
     }
 
     const hidePreview = () => {

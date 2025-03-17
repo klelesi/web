@@ -36,34 +36,31 @@ export function CommentForm({post, comment, parentId, onSuccess}: {
         event.preventDefault();
         setIsLoading(true);
 
-        client.get('/api/sanctum/csrf-cookie').then(() => {
-            if (!comment) {
-                client.post('/api/comments', {
-                    postId: post.id,
-                    markdown: form.markdown,
-                    parentId: parentId,
-                }).then((response) => {
-                    setIsLoading(false);
-                    setForm({markdown: ''});
+        if (!comment) {
+            client.post('/api/comments', {
+                postId: post.id,
+                markdown: form.markdown,
+                parentId: parentId,
+            }).then((response) => {
+                setIsLoading(false);
+                setForm({markdown: ''});
 
-                    if (onSuccess) {
-                        onSuccess(response.data.data);
-                    }
-                })
-            } else {
-                client.put(`/api/comments/${comment.id}`, {
-                    markdown: form.markdown,
-                }).then((response) => {
-                    setIsLoading(false);
-                    setForm({markdown: ''});
+                if (onSuccess) {
+                    onSuccess(response.data.data);
+                }
+            })
+        } else {
+            client.put(`/api/comments/${comment.id}`, {
+                markdown: form.markdown,
+            }).then((response) => {
+                setIsLoading(false);
+                setForm({markdown: ''});
 
-                    if (onSuccess) {
-                        onSuccess(response.data.data);
-                    }
-                })
-            }
-
-        });
+                if (onSuccess) {
+                    onSuccess(response.data.data);
+                }
+            })
+        }
     }
 
     return <div>
