@@ -23,7 +23,7 @@ const STORAGE_KEY = 'auth';
 
 export function AuthProvider({children}: { children: ReactNode }) {
     const {logout} = useUserApi();
-    const [currentUser, setCurrentUser] = useState<Auth|null>(null)
+    const [currentUser, setCurrentUser] = useState<Auth | null>(null)
 
     useEffect(() => {
         const storedUser = getStoredUser();
@@ -53,8 +53,10 @@ export function AuthProvider({children}: { children: ReactNode }) {
     }
 
     const loginUser = (user: Auth) => {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(user));
-        setCurrentUser(user);
+        if (user) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(user));
+            setCurrentUser(user);
+        }
     }
 
     return (
