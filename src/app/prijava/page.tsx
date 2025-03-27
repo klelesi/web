@@ -17,20 +17,11 @@ enum State {
 export default function Login() {
     const [state, setState] = useState(State.CHECKING);
     const {loginUser} = useContext(AuthContext);
-    const {getProfile} = useUserApi();
-    const router = useRouter();
+    const {checkLogin} = useUserApi();
 
-    const checkLogin = () => {
-        getProfile().then((success) => {
-            loginUser(success.data.data);
-            router.push('/');
-        }, () => {
-            setState(State.IDLE);
-        });
-    }
 
     useEffect(() => {
-        checkLogin();
+        checkLogin(() => setState(State.IDLE));
     }, []);
 
     return (
@@ -52,6 +43,14 @@ export default function Login() {
                                     <button className={'btn btn-primary-outline'}>
                                         <FontAwesomeIcon className={'mr-2'} icon={faGithub}></FontAwesomeIcon>GitHub
                                     </button>
+                                </a>
+
+                                <hr className="my-10"/>
+
+                                <h2 className="text-xl font-bold mb-6">Še nimaš računa?</h2>
+
+                                <a href="/registracija">
+                                    <button className="btn btn-sm btn-primary">Registriraj se</button>
                                 </a>
                             </> : null}
                         </div>
