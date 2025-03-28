@@ -28,6 +28,10 @@ export default function useUserApi() {
         return client.post('/api/auth/password-request', data);
     }
 
+    const passwordReset = (data: { email: string, token: string, password: string }) => {
+        return client.post('/api/auth/password-reset', data);
+    }
+
     const logout = () => {
         return client.post('/api/auth/logout', {})
     }
@@ -49,5 +53,6 @@ export default function useUserApi() {
         checkLogin,
         login,
         passwordRequest,
+        passwordReset,
     }
 }
