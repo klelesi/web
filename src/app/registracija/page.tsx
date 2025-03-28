@@ -24,7 +24,6 @@ const schema = z.object({
 enum ViewState {
     SAVING,
     IDLE,
-    SUCCESS
 }
 
 function RegisterForm({onSuccess = () => {}}) {
