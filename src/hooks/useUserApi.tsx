@@ -24,6 +24,10 @@ export default function useUserApi() {
         return client.post('/api/auth/login', data);
     }
 
+    const passwordRequest = (data: { email: string }) => {
+        return client.post('/api/auth/password-request', data);
+    }
+
     const logout = () => {
         return client.post('/api/auth/logout', {})
     }
@@ -44,5 +48,6 @@ export default function useUserApi() {
         register,
         checkLogin,
         login,
+        passwordRequest,
     }
 }

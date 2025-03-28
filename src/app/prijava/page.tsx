@@ -104,11 +104,15 @@ export default function Login() {
                                                 disabled={!!validation || serverError || state === State.LOGGING_IN}>Prijavi
                                             se
                                         </button>
+
                                     </div>
 
+                                    <div className="text-right mt-3">
+                                        <a className={'text-sm hover:text-red hover:underline'} href="/sprememba-gesla">Pozabljeno geslo?</a>
+                                    </div>
                                 </form>
 
-                                <hr className="my-10"/>
+                                <hr className="mb-10 mt-6"/>
 
                                 <div className="text-center">
 
