@@ -1,14 +1,12 @@
 'use client';
 
 import {Card} from "@/components/card";
-import Shimmer from "@/components/shimmer";
-import {useContext, useEffect, useState} from "react";
+import {FormEvent, useState} from "react";
 import useUserApi from "@/hooks/useUserApi";
 import FormInput from "@/components/form-input";
 import {AxiosError} from "axios";
 import {z, ZodError} from "zod";
-import {AuthContext} from "@/hooks/auth-provider";
-import {useRouter} from "next/navigation";
+import {ValidationErrorResponse} from "@/interfaces";
 
 const schema = z.object({
     email: z.string().email('Email mora imeti vsaj @ in zgledati kot email.'),
@@ -20,34 +18,41 @@ enum State {
     SUCCESS,
 }
 
+interface Form {
+    email: string,
+}
+
 export default function Page() {
     const [state, setState] = useState(State.IDLE);
-    const [form, setForm] = useState({email: ''})
-    const [validation, setValidation] = useState<ZodError | null>(null);
-    const [serverError, setServerError] = useState(null);
+    const [form, setForm] = useState<Form>({email: ''})
+    const [validation, setValidation] = useState<ZodError<Form> | null>(null);
+    const [serverError, setServerError] = useState<ValidationErrorResponse | null
+    >(null);
     const {passwordRequest} = useUserApi();
 
 
-    const onSubmit = (event: SubmitEvent) => {
+    const onSubmit = (event: FormEvent) => {
         event.preventDefault();
         if (validate(form)) {
             setState(State.SENDING);
 
-            passwordRequest(form).then((response) => {
+            passwordRequest(form).then(() => {
                 setState(State.SUCCESS);
             }, (error: AxiosError) => {
-                setServerError(error.response.data);
+                if (error.response) {
+                    setServerError(error.response.data as ValidationErrorResponse);
+                }
                 setState(State.IDLE);
             });
         }
     }
 
-    const validate = (data) => {
+    const validate = (data: Form) => {
         try {
             schema.parse(data);
             setValidation(null);
         } catch (e) {
-            setValidation(e);
+            setValidation(e as ZodError);
             return false;
         }
 
@@ -104,7 +109,7 @@ export default function Page() {
 
                                     <div className={'text-center mt-10'}>
                                         <button className="btn btn-primary"
-                                                disabled={!!validation || serverError || state === State.SENDING}>Pošlji
+                                                disabled={!!validation || serverError != null || state === State.SENDING}>Pošlji
                                             ponastavitev
                                         </button>
                                     </div>

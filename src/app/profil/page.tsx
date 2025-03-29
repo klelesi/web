@@ -1,12 +1,12 @@
 'use client';
 
 import {Card} from "@/components/card";
-import {ChangeEvent, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {AxiosError} from "axios";
 import {Loader} from "@/components/loader";
 import {ShowError} from "@/components/show-error";
 import useUserApi from "@/hooks/useUserApi";
-import {Auth, PostType} from "@/interfaces";
+import {Auth} from "@/interfaces";
 import {z} from "zod";
 import FormInput from "@/components/form-input";
 
@@ -24,7 +24,7 @@ const schema = z.object({
 export default function Profile() {
     const {getProfile, updateProfile} = useUserApi();
     const [state, setState] = useState(State.LOADING);
-    const [profile, setProfile] = useState<Auth>(null);
+    const [profile, setProfile] = useState<Auth | null>(null);
     const [form, setForm] = useState<{ name: string }>({name: ''})
     const [error, setError] = useState<AxiosError | undefined>();
     const [validation, setValidation] = useState(schema.safeParse(form));

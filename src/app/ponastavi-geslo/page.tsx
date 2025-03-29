@@ -1,14 +1,13 @@
 'use client';
 
 import {Card} from "@/components/card";
-import Shimmer from "@/components/shimmer";
-import {useContext, useEffect, useState} from "react";
+import {FormEvent, Suspense, useEffect, useState} from "react";
 import useUserApi from "@/hooks/useUserApi";
 import FormInput from "@/components/form-input";
 import {AxiosError} from "axios";
 import {z, ZodError} from "zod";
-import {AuthContext} from "@/hooks/auth-provider";
-import {useRouter, useSearchParams} from "next/navigation";
+import {useSearchParams} from "next/navigation";
+import {ValidationErrorResponse} from "@/interfaces";
 
 const schema = z.object({
     email: z.string().email('Email mora imeti vsaj @ in zgledati kot email.'),
@@ -33,31 +32,34 @@ function SuccessState() {
 
         <a className={'mt-6 block'} href="/prijava">
             <button className="btn btn-sm btn-primary-outline"
-                    >Prijavi se
+            >Prijavi se
             </button>
         </a>
     </div>
 }
 
-export default function Page() {
+interface Form {email: string, password: string, passwordConfirmation: string, token: string}
+
+function Page() {
     const [state, setState] = useState(State.IDLE);
-    const [form, setForm] = useState({email: '', password: '', passwordConfirmation: '', token: ''});
-    const [validation, setValidation] = useState<ZodError | null>(null);
-    const [serverError, setServerError] = useState(null);
+    const [form, setForm] = useState<Form>({email: '', password: '', passwordConfirmation: '', token: ''});
+    const [validation, setValidation] = useState<ZodError<Form> | null>(null);
+    const [serverError, setServerError] = useState<ValidationErrorResponse|null>(null);
     const {passwordReset} = useUserApi();
     const params = useSearchParams()
     const token: string | null = params.get('token');
 
-    const onSubmit = (event: SubmitEvent) => {
+    const onSubmit = (event: FormEvent) => {
         event.preventDefault();
         if (validate(form)) {
             setState(State.SAVING);
 
-            passwordReset(form).then((response) => {
+            passwordReset(form).then(() => {
                 setState(State.SUCCESS);
-                console.log('SUCCESS');
             }, (error: AxiosError) => {
-                setServerError(error.response.data);
+                if (error.response) {
+                    setServerError(error.response.data as ValidationErrorResponse);
+                }
                 setState(State.IDLE);
             });
         }
@@ -67,12 +69,12 @@ export default function Page() {
         setForm({...form, token: token ?? ''})
     }, [token]);
 
-    const validate = (data) => {
+    const validate = (data: Form) => {
         try {
             schema.parse(data);
             setValidation(null);
         } catch (e) {
-            setValidation(e);
+            setValidation(e as ZodError);
             return false;
         }
 
@@ -108,7 +110,8 @@ export default function Page() {
                                                onChange={(prop, value) => onFormChange(prop, value)}
                                                disabled={state === State.SAVING}/>
 
-                                    <FormInput label={'Geslo:'} type={'password'} name={'password'} value={form.password}
+                                    <FormInput label={'Geslo:'} type={'password'} name={'password'}
+                                               value={form.password}
                                                error={validation?.format().password?._errors.join(". ")}
                                                autocomplete={'new-password'}
                                                onChange={(prop, value) => onFormChange(prop, value)}
@@ -122,9 +125,10 @@ export default function Page() {
 
 
                                     <div className={'text-center mt-10'}>
-                                        <p className="text-red mb-2">{ serverError?.errors?.token?.join(". ")}</p>
+                                        <p className="text-red mb-2">{serverError?.errors?.token?.join(". ")}</p>
                                         <button className="btn btn-primary"
-                                                disabled={!!validation || serverError || state === State.SAVING}>Shrani geslo
+                                                disabled={!!validation || serverError != null || state === State.SAVING}>Shrani
+                                            geslo
                                         </button>
                                     </div>
 
@@ -138,3 +142,9 @@ export default function Page() {
     );
 }
 
+export default function Wrapper() {
+
+    return <Suspense>
+        <Page/>
+    </Suspense>
+}

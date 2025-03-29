@@ -52,6 +52,11 @@ export interface PaginatedResult<T> {
     }
 }
 
+export interface ValidationErrorResponse {
+    message: string,
+    errors: { [key: string]: string[] }
+}
+
 export interface Result<T> {
     data: T,
 }

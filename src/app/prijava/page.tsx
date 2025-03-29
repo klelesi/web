@@ -1,17 +1,15 @@
 'use client';
 
 import {Card} from "@/components/card";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faGithub} from "@fortawesome/free-brands-svg-icons/faGithub";
 import Shimmer from "@/components/shimmer";
-import {useContext, useEffect, useState} from "react";
+import {FormEvent, useContext, useEffect, useState} from "react";
 import useUserApi from "@/hooks/useUserApi";
 import FormInput from "@/components/form-input";
 import {AxiosError} from "axios";
 import {z, ZodError} from "zod";
 import {AuthContext} from "@/hooks/auth-provider";
-import {router} from "next/client";
 import {useRouter} from "next/navigation";
+import {ValidationErrorResponse} from "@/interfaces";
 
 
 const schema = z.object({
@@ -25,12 +23,17 @@ enum State {
     LOGGING_IN,
 }
 
+interface Form {
+    email: string,
+    password: string
+}
+
 export default function Login() {
     const [state, setState] = useState(State.CHECKING);
     const {checkLogin, login} = useUserApi();
-    const [form, setForm] = useState({email: '', password: ''})
-    const [validation, setValidation] = useState<ZodError | null>(null);
-    const [serverError, setServerError] = useState(null);
+    const [form, setForm] = useState<Form>({email: '', password: ''})
+    const [validation, setValidation] = useState<ZodError<Form> | null>(null);
+    const [serverError, setServerError] = useState<ValidationErrorResponse | null>(null);
     const {loginUser} = useContext(AuthContext);
     const router = useRouter();
 
@@ -38,7 +41,7 @@ export default function Login() {
         checkLogin(() => setState(State.IDLE));
     }, []);
 
-    const onSubmit = (event: SubmitEvent) => {
+    const onSubmit = (event: FormEvent) => {
         event.preventDefault();
         if (validate(form)) {
             setState(State.LOGGING_IN);
@@ -47,18 +50,20 @@ export default function Login() {
                 loginUser(response.data);
                 router.push('/')
             }, (error: AxiosError) => {
-                setServerError(error.response.data);
+                if (error.response) {
+                    setServerError(error.response.data as ValidationErrorResponse);
+                }
                 setState(State.IDLE);
             });
         }
     }
 
-    const validate = (data) => {
+    const validate = (data:Form) => {
         try {
             schema.parse(data);
             setValidation(null);
         } catch (e) {
-            setValidation(e);
+            setValidation(e as ZodError);
             return false;
         }
 
@@ -94,21 +99,26 @@ export default function Login() {
                                 <form onSubmit={(event) => onSubmit(event)}>
                                     <FormInput label={"Email:"} type={'email'}
                                                error={validation?.format().email?._errors.join(". ") ?? serverError?.errors?.email?.join(". ")}
-                                               name={'email'} value={form.email} onChange={(prop, value) => onFormChange(prop, value)} disabled={state === State.LOGGING_IN}/>
-                                    <FormInput label={"Geslo:"} type={'password'} name={'password'} value={form.password} onChange={(prop, value) => onFormChange(prop, value)} đ
+                                               name={'email'} value={form.email}
+                                               onChange={(prop, value) => onFormChange(prop, value)}
+                                               disabled={state === State.LOGGING_IN}/>
+                                    <FormInput label={"Geslo:"} type={'password'} name={'password'}
+                                               value={form.password}
+                                               onChange={(prop, value) => onFormChange(prop, value)}
                                                error={validation?.format().password?._errors.join(". ") ?? serverError?.errors?.password?.join(". ")}
                                                disabled={state === State.LOGGING_IN}/>
 
                                     <div className={'text-center mt-10'}>
                                         <button className="btn btn-primary"
-                                                disabled={!!validation || serverError || state === State.LOGGING_IN}>Prijavi
+                                                disabled={!!validation || serverError != null || state === State.LOGGING_IN}>Prijavi
                                             se
                                         </button>
 
                                     </div>
 
                                     <div className="text-right mt-3">
-                                        <a className={'text-sm hover:text-red hover:underline'} href="/sprememba-gesla">Pozabljeno geslo?</a>
+                                        <a className={'text-sm hover:text-red hover:underline'} href="/sprememba-gesla">Pozabljeno
+                                            geslo?</a>
                                     </div>
                                 </form>
 
@@ -116,11 +126,13 @@ export default function Login() {
 
                                 <div className="text-center">
 
-                                <h2 className="text-xl font-bold mb-6">Še nimaš računa?</h2>
+                                    <h2 className="text-xl font-bold mb-6">Še nimaš računa?</h2>
 
-                                <a href="/registracija">
-                                    <button disabled={state === State.LOGGING_IN} className="btn btn-sm btn-primary-outline">Registriraj se</button>
-                                </a>
+                                    <a href="/registracija">
+                                        <button disabled={state === State.LOGGING_IN}
+                                                className="btn btn-sm btn-primary-outline">Registriraj se
+                                        </button>
+                                    </a>
                                 </div>
 
                             </> : null}

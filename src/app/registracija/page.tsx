@@ -3,12 +3,12 @@
 import {Card} from "@/components/card";
 import FormInput from "@/components/form-input";
 import {z, ZodError} from "zod";
-import {useContext, useEffect, useState} from "react";
+import {FormEvent, useContext, useEffect, useState} from "react";
 import useUserApi from "@/hooks/useUserApi";
 import {AuthContext} from "@/hooks/auth-provider";
 import {AxiosError} from "axios";
-import useCSRFCookieApi from "@/hooks/useCSRFCookieApi";
 import Shimmer from "@/components/shimmer";
+import {ValidationErrorResponse} from "@/interfaces";
 
 const schema = z.object({
     name: z.string().min(1, "Brez imena ne bo šlo."),
@@ -26,20 +26,31 @@ enum ViewState {
     IDLE,
 }
 
-function RegisterForm({onSuccess = () => {}}) {
+interface Form {
+    name: string,
+    email: string,
+    password: string,
+    passwordConfirmation: string,
+    confirmTOS: boolean,
+}
+
+function RegisterForm({
+                          onSuccess = () => {
+                          }
+                      }) {
     const [form, setForm] = useState({name: '', email: '', password: '', passwordConfirmation: '', confirmTOS: false});
-    const [validation, setValidation] = useState<ZodError | null>(null);
-    const [serverError, setServerError] = useState(null);
+    const [validation, setValidation] = useState<ZodError<Form> | null>(null);
+    const [serverError, setServerError] = useState<ValidationErrorResponse | null>(null);
     const {register} = useUserApi();
     const {loginUser} = useContext(AuthContext);
     const [currentState, setCurrentState] = useState(ViewState.IDLE)
 
-    const validate = (data) => {
+    const validate = (data: Form) => {
         try {
             schema.parse(data);
             setValidation(null);
         } catch (e) {
-            setValidation(e);
+            setValidation(e as ZodError);
             return false;
         }
 
@@ -57,18 +68,20 @@ function RegisterForm({onSuccess = () => {}}) {
         setServerError(null);
     }
 
-    const submit = (event: SubmitEvent) => {
+    const submit = (event: FormEvent) => {
         event.preventDefault();
         if (validate(form)) {
             setCurrentState(ViewState.SAVING);
 
             register(form).then((response) => {
                 loginUser(response.data);
-                if(onSuccess){
+                if (onSuccess) {
                     onSuccess();
                 }
             }, (error: AxiosError) => {
-                setServerError(error.response.data);
+                if(error.response){
+                    setServerError(error.response.data as ValidationErrorResponse);
+                }
                 setCurrentState(ViewState.IDLE);
             });
         }
@@ -110,7 +123,7 @@ function RegisterForm({onSuccess = () => {}}) {
                         ' w-4 mr-4'} type="checkbox" checked={form.confirmTOS}
                     onChange={() => onFormChange('confirmTOS', !form.confirmTOS)}/><span>strinjam se s <a
                     href="/pravila" target={'_blank'}>pravili</a> in <a href="/politika-zasebnosti"
-                                                                 target={'_blank'}>politko zasebnosti</a></span></label>
+                                                                        target={'_blank'}>politko zasebnosti</a></span></label>
 
                 <p className="text-error mt-2">{validation?.format().confirmTOS?._errors.join(". ")}</p>
 
@@ -118,7 +131,7 @@ function RegisterForm({onSuccess = () => {}}) {
 
             <div className={'text-center mt-10'}>
                 <button className="btn btn-primary"
-                        disabled={!!validation || currentState === ViewState.SAVING || serverError}>Registriraj
+                        disabled={!!validation || currentState === ViewState.SAVING || serverError != null}>Registriraj
                     se
                 </button>
             </div>
@@ -173,7 +186,8 @@ export default function Page() {
                             {currentState === PageState.SUCCESS && <SuccessState/>}
                         </div>
                         <div>
-                            {currentState === PageState.REGISTER && <RegisterForm onSuccess={() => setCurrentState(PageState.SUCCESS)}/>}
+                            {currentState === PageState.REGISTER &&
+                                <RegisterForm onSuccess={() => setCurrentState(PageState.SUCCESS)}/>}
                         </div>
                         <div>
                             {currentState === PageState.CHECKING && <div className="grid grid-cols-1 gap-3">
