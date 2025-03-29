@@ -30,6 +30,13 @@ export interface Post {
     comments: Comment[],
     createdAt: string;
     updatedAt: string;
+    interactions?: Interaction[];
+}
+
+export interface Interaction {
+    type: 'view';
+    createdAt: string;
+    updatedAt: string;
 }
 
 export interface Comment {

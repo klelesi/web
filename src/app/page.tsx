@@ -4,7 +4,9 @@ import {Card} from "@/components/card";
 import {PaginatedResult, Post} from "@/interfaces";
 import {PostCard} from "@/components/post-card";
 import {NextPage} from "@/components/next-page";
-import {ReactNode} from "react";
+import React, {ReactNode} from "react";
+import PostList from "@/components/post-list";
+import AuthEnhancer from "@/components/auth-enhancer";
 
 export const revalidate = 1;
 
@@ -36,7 +38,7 @@ export default async function Home() {
                         <div className="prose"><p>Trenutno ni prispevkov.</p><p>Nerodno.</p></div>
                     </EmptyState>)}
 
-                    {data.data.map((post) => <div key={post.id}><PostCard post={post}/></div>)}
+                    <AuthEnhancer posts={data.data}/>
 
                     {data.meta.nextCursor && (<NextPage cursor={data.meta.nextCursor}/>)}
                 </div>
@@ -45,7 +47,7 @@ export default async function Home() {
     );
 }
 
-function EmptyState({children}: {children: ReactNode}) {
+function EmptyState({children}: { children: ReactNode }) {
     return <Card>
         <div className="text-center py-10 text-lg">
             {children}

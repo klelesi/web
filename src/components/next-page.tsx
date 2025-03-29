@@ -5,6 +5,7 @@ import {useIntersectionObserver} from 'react-intersection-observer-hook';
 import PostList from "@/components/post-list";
 import {PaginatedResult, Post} from "@/interfaces.js";
 import Shimmer from "@/components/shimmer";
+import usePostApi from "@/hooks/usePostApi";
 
 enum State {
     HIDDEN,
@@ -17,13 +18,14 @@ export const NextPage = ({cursor}: { cursor: string | null }) => {
     const [data, setData] = useState<PaginatedResult<Post>>({data: [], meta: {nextCursor: null}});
     const isVisible = entry && entry.isIntersecting;
     const [state, setState] = useState(State.HIDDEN);
+    const {getFeed} = usePostApi();
 
     useEffect(() => {
         if (isVisible && state === State.HIDDEN) {
             setState(State.LOADING);
 
-            fetch(process.env.NEXT_PUBLIC_API_URL + '/api/feed?cursor=' + cursor).then((response => response.json())).then((data) => {
-                setData(data);
+            getFeed({cursor}).then((response) => {
+                setData(response.data);
                 setState(State.RESOLVED);
             })
         }
@@ -33,15 +35,13 @@ export const NextPage = ({cursor}: { cursor: string | null }) => {
         return;
     }
 
-    return  <>
+    return <>
         <div ref={ref} className={'absolute'}></div>
         {state === State.LOADING && (<>
-           <Shimmer height={'3rem'} />
+            <Shimmer height={'3rem'}/>
         </>)}
         {state === State.RESOLVED && (<>
             <PostList posts={data.data}></PostList><NextPage cursor={data.meta.nextCursor}/>
         </>)}
     </>
-
-
 }
