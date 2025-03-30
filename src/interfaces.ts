@@ -35,6 +35,7 @@ export interface Post {
 
 export interface Interaction {
     type: 'view';
+    interactableId?: string;
     createdAt: string;
     updatedAt: string;
 }

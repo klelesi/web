@@ -1,7 +1,7 @@
 'use client'
 
 import axios, {AxiosError} from "axios";
-import {useCallback, useContext, useEffect, useMemo} from "react";
+import {useCallback, useContext, useMemo} from "react";
 import {AuthContext} from "@/hooks/auth-provider";
 
 export default function useClientAxios() {

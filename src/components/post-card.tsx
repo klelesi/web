@@ -10,7 +10,7 @@ export interface PostCardConfig {
 }
 
 export const PostCard = ({post, config = {hideActions: false}}: { post: Post, config?: PostCardConfig }) => {
-    return (<Card backgroundColor={post.interactions?.length >= 1 ? 'rgba(255,255,255,0.15)' : ''}>
+    return (<Card backgroundColor={(post.interactions && post.interactions.length >= 1) ? 'rgba(255,255,255,0.15)' : ''}>
         <div className="grid grid-cols-1 gap-2">
             <a href={`${post.slug}`} className={'hover:text-red'}>
                 <h3 className="text-xl md:text-2xl font-bold traciking-tight leading-tight flex">

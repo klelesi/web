@@ -1,7 +1,7 @@
-import {JSX, ReactNode} from "react";
+import {ReactNode} from "react";
 
 export const Card = ({children, backgroundColor}: {
-    children: ReactNode | JSX,
+    children: ReactNode,
     backgroundColor?: string
 }) => {
 

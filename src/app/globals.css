@@ -99,3 +99,12 @@ textarea:disabled, input:disabled, select:disabled {
         background-position: 0;
     }
 }
+
+dialog {
+    width: min(500px, calc(100vw - 2rem));
+}
+
+dialog::backdrop {
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(0.25rem);
+}

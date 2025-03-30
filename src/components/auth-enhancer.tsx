@@ -1,6 +1,6 @@
 'use client';
 
-import {Post} from "@/interfaces";
+import {Interaction, Post} from "@/interfaces";
 import PostList from "@/components/post-list";
 import React, {useContext, useEffect, useState} from "react";
 import {AuthContext} from "@/hooks/auth-provider";
@@ -14,8 +14,8 @@ export default function AuthEnhancer({posts}: { posts: Post[] }) {
     useEffect(() => {
         if (currentUser) {
             getPostsInteractions({postIds: posts.map((post) => post.id)}).then((response) => {
-                const map = response.data.data.reduce((accumulator, currentValue) => {
-                    accumulator[currentValue.interactableId] = currentValue;
+                const map = response.data.data.reduce((accumulator: {[key:string]: Interaction}, currentValue: Interaction) => {
+                    accumulator[currentValue.interactableId!] = currentValue;
                     return accumulator;
                 }, {})
 

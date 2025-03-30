@@ -10,6 +10,7 @@ import {faComments} from "@fortawesome/free-solid-svg-icons";
 import {CommentForm} from "@/app/guna/[slug]/components/comment-form";
 import {isCurrentUserAuthor} from "@/utils";
 import {AuthContext} from "@/hooks/auth-provider";
+import {ReportContentDialog} from "@/app/guna/[slug]/report-content-dialog";
 
 enum State {
     IDLE,
@@ -49,9 +50,13 @@ export function CommentItem({comment, post}: { comment: Comment, post: Post }) {
         </div> : null}
 
         {currentState === State.IDLE ?
-            <button className="btn btn-sm btn-primary-outline mt-2" onClick={() => setCurrentState(State.RESPONDING)}>
+            <><button className="btn btn-sm btn-primary-outline mt-2 mr-3" onClick={() => setCurrentState(State.RESPONDING)}>
                 <FontAwesomeIcon icon={faComments} className={'mr-2'}/>
-                Odgovori</button> : null}
+                Odgovori</button>
+                <ReportContentDialog comment={comment}/>
+
+            </> : null}
+
 
         {(currentState === State.EDITING || currentState === State.RESPONDING) ? <div className="mb-4">
 

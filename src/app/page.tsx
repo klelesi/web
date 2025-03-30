@@ -2,10 +2,8 @@ import Image from 'next/image'
 import Logo from "@/components/logo";
 import {Card} from "@/components/card";
 import {PaginatedResult, Post} from "@/interfaces";
-import {PostCard} from "@/components/post-card";
 import {NextPage} from "@/components/next-page";
 import React, {ReactNode} from "react";
-import PostList from "@/components/post-list";
 import AuthEnhancer from "@/components/auth-enhancer";
 
 export const revalidate = 1;
