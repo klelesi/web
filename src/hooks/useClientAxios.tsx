@@ -8,7 +8,7 @@ export default function useClientAxios() {
     const {clear} = useContext(AuthContext);
 
     const refreshCSRFCookie = useCallback(() => {
-        return axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/sanctum/csrf-cookie`, {
+        return axios.get(`${process.env.NEXT_PUBLIC_API_URL}/sanctum/csrf-cookie`, {
             withCredentials: true,
             withXSRFToken: true,
         });

@@ -25,7 +25,7 @@ export default function FormMarkdown(props: {
         setInPreview(true);
         setIsLoading(true);
 
-        client.post(`/api/markdown`, {markdown: props.value}).then((response) => response.data.data as Post).then((res: Post) => {
+        client.post(`/markdown`, {markdown: props.value}).then((response) => response.data.data as Post).then((res: Post) => {
                 setPreviewHtml(res.html!);
                 setIsLoading(false);
             }

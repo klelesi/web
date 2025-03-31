@@ -58,7 +58,7 @@ const PostForm = ({post}: { post?: Post | null }) => {
         event.preventDefault();
 
         if (post) {
-            client.put(`/api/posts/${post.id}`, postSchema.safeParse(form).data).then((response) => response.data.data as Post).then((post: Post) => {
+            client.put(`/posts/${post.id}`, postSchema.safeParse(form).data).then((response) => response.data.data as Post).then((post: Post) => {
                     router.push(post.slug);
                 },
                 (error: AxiosError) => {
@@ -67,7 +67,7 @@ const PostForm = ({post}: { post?: Post | null }) => {
                 }
             )
         } else {
-            client.post(`/api/posts`, postSchema.safeParse(form).data).then((response) => response.data.data as Post).then((post: Post) => {
+            client.post(`/posts`, postSchema.safeParse(form).data).then((response) => response.data.data as Post).then((post: Post) => {
                     router.push(post.slug);
                 },
                 (error: AxiosError) => {
@@ -176,7 +176,7 @@ function SubmitPost() {
             if (!id) {
                 setCurrentViewState(ViewState.NEW_POST);
             } else {
-                client.get(`${process.env.NEXT_PUBLIC_API_URL}/api/posts/${id}`).then(response => response.data).then((response) => {
+                client.get(`${process.env.NEXT_PUBLIC_API_URL}/posts/${id}`).then(response => response.data).then((response) => {
                     if (isCurrentUserAuthor(currentUser, response.data)) {
                         setCurrentViewState(ViewState.EDIT_POST);
                         setPost(response.data);

@@ -4,7 +4,7 @@ export default function usePostApi() {
     const client = useClientAxios();
 
     const getFeed = ({cursor}: { cursor?: string|null }) => {
-        return client.get('/api/feed', {params: {cursor}});
+        return client.get('/feed', {params: {cursor}});
     }
 
     return {

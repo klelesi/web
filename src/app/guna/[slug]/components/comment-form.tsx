@@ -37,7 +37,7 @@ export function CommentForm({post, comment, parentId, onSuccess}: {
         setIsLoading(true);
 
         if (!comment) {
-            client.post('/api/comments', {
+            client.post('/comments', {
                 postId: post.id,
                 markdown: form.markdown,
                 parentId: parentId,
@@ -50,7 +50,7 @@ export function CommentForm({post, comment, parentId, onSuccess}: {
                 }
             })
         } else {
-            client.put(`/api/comments/${comment.id}`, {
+            client.put(`/comments/${comment.id}`, {
                 markdown: form.markdown,
             }).then((response) => {
                 setIsLoading(false);

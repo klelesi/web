@@ -9,7 +9,7 @@ import AuthEnhancer from "@/components/auth-enhancer";
 export const revalidate = 1;
 
 export default async function Home() {
-    const posts = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/feed`);
+    const posts = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/feed`);
     const data: PaginatedResult<Post> = await posts.json();
 
     return (

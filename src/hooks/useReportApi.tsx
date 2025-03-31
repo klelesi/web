@@ -4,7 +4,7 @@ export default function useReportApi() {
     const client = useClientAxios();
 
     const storeReport = (data: { postId?: string, commentId?: string, comment: string }) => {
-        return client.post('/api/reports', data);
+        return client.post('/reports', data);
     }
 
     return {

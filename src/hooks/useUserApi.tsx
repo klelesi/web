@@ -9,31 +9,31 @@ export default function useUserApi() {
     const router = useRouter();
 
     const getProfile = () => {
-        return client.get('/api/user');
+        return client.get('/user');
     }
 
     const updateProfile = (data: { name: string }) => {
-        return client.put('/api/user', data);
+        return client.put('/user', data);
     }
 
     const register = (data: { name: string, password: string, email: string }) => {
-        return client.post('/api/auth/register', data);
+        return client.post('/auth/register', data);
     }
 
     const login = (data: { password: string, email: string }) => {
-        return client.post('/api/auth/login', data);
+        return client.post('/auth/login', data);
     }
 
     const passwordRequest = (data: { email: string }) => {
-        return client.post('/api/auth/password-request', data);
+        return client.post('/auth/password-request', data);
     }
 
     const passwordReset = (data: { email: string, token: string, password: string }) => {
-        return client.post('/api/auth/password-reset', data);
+        return client.post('/auth/password-reset', data);
     }
 
     const logout = () => {
-        return client.post('/api/auth/logout', {})
+        return client.post('/auth/logout', {})
     }
 
     const checkLogin = (callback = () => {}) => {
