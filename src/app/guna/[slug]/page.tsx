@@ -11,7 +11,7 @@ import { isLocked } from "@/utils";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLock } from "@fortawesome/free-solid-svg-icons";
 
-export const revalidate = 1;
+export const revalidate = 0;
 
 type Params = {
   params: Promise<{ slug: string }>;
