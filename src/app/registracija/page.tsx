@@ -74,7 +74,7 @@ function RegisterForm({
             setCurrentState(ViewState.SAVING);
 
             register(form).then((response) => {
-                loginUser(response.data);
+                loginUser(response.data.data);
                 if (onSuccess) {
                     onSuccess();
                 }

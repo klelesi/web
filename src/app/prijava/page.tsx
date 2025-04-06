@@ -47,7 +47,7 @@ export default function Login() {
             setState(State.LOGGING_IN);
 
             login(form).then((response) => {
-                loginUser(response.data);
+                loginUser(response.data.data);
                 router.push('/')
             }, (error: AxiosError) => {
                 if (error.response) {
