@@ -2,8 +2,8 @@
 
 import {Comment, Post} from "@/interfaces";
 import {Card} from "@/components/card";
-import {CommentForm} from "@/app/guna/[slug]/components/comment-form";
-import {CommentItem} from "@/app/guna/[slug]/components/comment-item";
+import {CommentForm} from "@/components/comment-form";
+import {CommentItem} from "@/components/comment-item";
 import {useState} from "react";
 import {NotificationCard} from "@/components/notification-card";
 
