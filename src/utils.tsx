@@ -1,45 +1,49 @@
-import {parseISO} from "date-fns/fp/parseISO";
-import {isToday} from "date-fns/isToday";
-import {isYesterday} from "date-fns/isYesterday";
-import {format} from "date-fns";
-import {Auth, Comment, Post} from "@/interfaces";
+import { parseISO } from "date-fns/fp/parseISO";
+import { isToday } from "date-fns/isToday";
+import { isYesterday } from "date-fns/isYesterday";
+import { format } from "date-fns";
+import { Auth, Comment, Post } from "@/interfaces";
 
 export const getNumberOfCommentsText = (numberOfComments: number): string => {
-    let text = 'komentarjev';
-    let base = numberOfComments;
+  let text = "komentarjev";
+  let base = numberOfComments;
 
-    if (base > 100) {
-        base = base % 100;
-    }
+  if (base > 100) {
+    base = base % 100;
+  }
 
-    if (base == 1) {
-        text = 'komentar';
-    } else if (base == 2) {
-        text = 'komentarja';
-    } else if (base == 3) {
-        text = 'komentarji';
-    } else if (base == 4) {
-        text = 'komentarji';
-    }
+  if (base == 1) {
+    text = "komentar";
+  } else if (base == 2) {
+    text = "komentarja";
+  } else if (base == 3) {
+    text = "komentarji";
+  } else if (base == 4) {
+    text = "komentarji";
+  }
 
-    return `${numberOfComments} ${text}`
-}
+  return `${numberOfComments} ${text}`;
+};
 
 export const humanReadableDate = (dateISO: string): string => {
-    const cleanedCreatedAt = dateISO.replace(/\.\d+Z$/, 'Z');
-    const date: Date = parseISO(cleanedCreatedAt) as Date;
+  const cleanedCreatedAt = dateISO.replace(/\.\d+Z$/, "Z");
+  const date: Date = parseISO(cleanedCreatedAt) as Date;
 
-    let formatString = "dd.MM.y 'ob' HH:mm";
+  let formatString = "dd.MM.y 'ob' HH:mm";
 
-    if (isToday(date)) {
-        formatString = "'danes ob' HH:mm";
-    } else if (isYesterday(date)) {
-        formatString = "'včeraj ob' HH:mm";
-    }
+  if (isToday(date)) {
+    formatString = "'danes ob' HH:mm";
+  } else if (isYesterday(date)) {
+    formatString = "'včeraj ob' HH:mm";
+  }
 
-    return format(date, formatString);
-}
+  return format(date, formatString);
+};
 
 export const isCurrentUserAuthor = (auth: Auth | null, item: Post | Comment) => {
-    return !!(auth && auth.id === item.author.id);
-}
+  return !!(auth && auth.id === item.author.id);
+};
+
+export const isLocked = (item: Post | Comment) => {
+  return !!item.lockedAt;
+};

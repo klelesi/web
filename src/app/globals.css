@@ -44,6 +44,9 @@
     background-color: white;
 }
 
+.w-page {
+    @apply max-w-[800px];
+}
 
 .prose {
     ul > li::before {
