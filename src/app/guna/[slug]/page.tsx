@@ -1,9 +1,9 @@
-import { Post, PostType } from "@/interfaces";
+import { LinkPost as LinkPostInterface, MarkdownPost as MarkdownPostInterface, Post, PostType } from "@/interfaces";
 import { NotificationCard } from "@/components/notification-card";
 import { Metadata } from "next";
 import { Card } from "@/components/card";
-import { MarkdownPost } from "@/components/markdown-post";
-import { LinkPost } from "@/components/link-post";
+import { MarkdownPost } from "@/components/post/markdown-post";
+import { LinkPost } from "@/components/post/link-post";
 import { ReportContentDialog } from "@/components/report-content-dialog";
 import { PostComments } from "@/components/post-comments";
 import PostUserInteractions from "@/components/post-user-interactions";
@@ -59,8 +59,8 @@ const ShowPost = ({ post }: { post: Post }) => {
     <>
       <Card>
         <>
-          {post.postType == PostType.MARKDOWN ? <MarkdownPost post={post} /> : null}
-          {post.postType == PostType.LINK ? <LinkPost post={post} /> : null}
+          {post.postType == PostType.MARKDOWN ? <MarkdownPost post={post as MarkdownPostInterface} /> : null}
+          {post.postType == PostType.LINK ? <LinkPost post={post as LinkPostInterface} /> : null}
         </>
 
         <div className="mt-6 flex flex-row justify-between items-center">

@@ -10,7 +10,7 @@ import React from "react";
 config.autoAddCss = false;
 
 export const metadata: Metadata = {
-  title: "Klele.si",
+  title: "Klele.si | Kjer so dobre debate doma",
   description: "Kjer so dobre debate doma.",
 };
 
@@ -18,15 +18,18 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="sl_SI">
       <head>
+        <title>Klele.si</title>
         <link rel="shortcut icon" type="image/jpg" href="/images/favicon.png" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+
+        {/* eslint-disable-next-line @next/next/no-page-custom-font */}
         <link href="https://fonts.googleapis.com/css2?family=Kulim+Park:wght@400;600;700&display=swap" rel="stylesheet" />
       </head>
       <Providers>
         <body className={"sans bg-beige h-screen overflow-none flex flex-col"}>
           <Navbar />
-          <div className="flex-1 py-3 overflow-auto">{children}</div>
+          <main className="flex-1 py-3 overflow-auto">{children}</main>
           <Footer />
         </body>
       </Providers>

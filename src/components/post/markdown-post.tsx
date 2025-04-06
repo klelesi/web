@@ -1,0 +1,23 @@
+import { PostMeta } from "@/components/post-meta";
+import PostAuthorActions from "@/components/post-author-actions";
+import { UnsafeHTML } from "@/components/unsafe-html";
+import { MarkdownPost as MarkdownPostInterface } from "@/interfaces";
+
+export const MarkdownPost = ({ post }: { post: MarkdownPostInterface }) => {
+  return (
+    <div className={"flex flex-col"}>
+      <div className="flex flex-row justify-between items-center">
+        <PostMeta author={post.author} createdAt={post.createdAt} />
+        <PostAuthorActions item={post} />
+      </div>
+
+      <hr className={"my-2"} />
+
+      <h1 className={"text-5xl font-bold mb-8"}>{post.title}</h1>
+
+      <div className={"prose"}>
+        <UnsafeHTML html={post.html} />
+      </div>
+    </div>
+  );
+};
