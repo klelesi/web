@@ -1,11 +1,11 @@
 import type {Metadata} from "next";
 import "./globals.css";
 import Navbar from "@/components/navbar";
-
 import {config} from '@fortawesome/fontawesome-svg-core'
 import '@fortawesome/fontawesome-svg-core/styles.css'
 import Footer from "@/components/footer";
 import {Providers} from "@/components/providers";
+import React from "react";
 
 config.autoAddCss = false
 

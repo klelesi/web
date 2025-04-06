@@ -3,7 +3,7 @@
 import React, {useEffect, useState} from 'react';
 import {useIntersectionObserver} from 'react-intersection-observer-hook';
 import PostList from "@/components/post-list";
-import {PaginatedResult, Post} from "@/interfaces.js";
+import {PaginatedApiResult, Post} from "@/interfaces.js";
 import Shimmer from "@/components/shimmer";
 import usePostApi from "@/hooks/usePostApi";
 
@@ -15,7 +15,7 @@ enum State {
 
 export const NextPage = ({cursor}: { cursor: string | null }) => {
     const [ref, {entry}] = useIntersectionObserver();
-    const [data, setData] = useState<PaginatedResult<Post>>({data: [], meta: {nextCursor: null}});
+    const [data, setData] = useState<PaginatedApiResult<Post>>({data: [], meta: {nextCursor: null}});
     const isVisible = entry && entry.isIntersecting;
     const [state, setState] = useState(State.HIDDEN);
     const {getFeed} = usePostApi();

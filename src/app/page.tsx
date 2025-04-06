@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Logo from "@/components/logo";
 import {Card} from "@/components/card";
-import {PaginatedResult, Post} from "@/interfaces";
+import {PaginatedApiResult, Post} from "@/interfaces";
 import {NextPage} from "@/components/next-page";
 import React, {ReactNode} from "react";
 import AuthEnhancer from "@/components/auth-enhancer";
@@ -10,7 +10,7 @@ export const revalidate = 1;
 
 export default async function Home() {
     const posts = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/feed`);
-    const data: PaginatedResult<Post> = await posts.json();
+    const data: PaginatedApiResult<Post> = await posts.json();
 
     return (
         <div>

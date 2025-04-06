@@ -14,24 +14,32 @@ export interface Post {
     slug: string;
     postType: PostType,
     title: string,
-    markdown?: string,
-    html?: string,
-    url?: string,
-    urlHost?: string,
-    urlMeta?: {
-        openGraph: { [key: string]: string }
-        [key: string]: unknown
-    },
     numberOfComments: number;
-    author: {
-        id: string;
-        name: string;
-    }
+    author: Author,
     comments: Comment[],
     createdAt: string;
     updatedAt: string;
     lockedAt: string;
     interactions?: Interaction[];
+}
+
+export interface Author {
+    id: string;
+    name: string;
+}
+
+export interface MarkdownPost extends Post {
+    markdown: string,
+    html: string,
+}
+
+export interface LinkPost extends Post {
+    url: string,
+    urlHost: string,
+    urlMeta: {
+        openGraph: { [key: string]: string }
+        [key: string]: unknown
+    },
 }
 
 export interface Interaction {
@@ -43,12 +51,9 @@ export interface Interaction {
 
 export interface Comment {
     id: string,
-    author: {
-        id: string;
-        name: string;
-    }
+    author: Author,
     html: string;
-    markdown?: string,
+    markdown: string,
     comments: Comment[],
     lockedAt: string;
     createdAt: string;
@@ -56,18 +61,18 @@ export interface Comment {
     deletedAt: string;
 }
 
-export interface PaginatedResult<T> {
+export interface PaginatedApiResult<T> {
     data: T[],
     meta: {
         nextCursor: string | null;
     }
 }
 
+export interface ApiResult<T> {
+    data: T,
+}
+
 export interface ValidationErrorResponse {
     message: string,
     errors: { [key: string]: string[] }
-}
-
-export interface Result<T> {
-    data: T,
 }
