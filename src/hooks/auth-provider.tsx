@@ -39,7 +39,7 @@ export function AuthProvider({children}: { children: ReactNode }) {
 
         if (storedPermissions) {
             setPermissions(storedPermissions);
-        } else {
+        } else if (storedUser) {
             getPermissions().then((response) => {
                 localStorage.setItem(STORAGE_KEY_PERMISSIONS, JSON.stringify(response.data.data.permissions));
                 setPermissions(response.data.data.permissions);
