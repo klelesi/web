@@ -8,7 +8,6 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTrash} from "@fortawesome/free-solid-svg-icons";
 import usePostApi from "@/hooks/usePostApi";
 import {useRouter} from "next/navigation";
-import {boolean} from "zod";
 
 enum ViewState {
     IDLE,
@@ -60,9 +59,8 @@ export default function PostAuthorActions({item}: { item: Post }) {
 
     return <div className="flex flex-row">
         {isCurrentUserAuthor(currentUser, item) || hasPermission('moderate content') && (<>
-            <a
-                disabled={currentViewState !== ViewState.IDLE} href={`/objava?id=${item.id}`} className={'mr-2'}>
-                <button className="btn-sm btn-primary-outline">Uredi</button>
+            <a href={`/objava?id=${item.id}`} className={'mr-2'}>
+                <button className="btn-sm btn-primary-outline" disabled={currentViewState !== ViewState.IDLE}>Uredi</button>
             </a>
         </>)}
 
