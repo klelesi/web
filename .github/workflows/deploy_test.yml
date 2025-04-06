@@ -42,6 +42,11 @@ jobs:
             rm -rf live
             cp -r build live
             rm -rf build
+      - name: Deploy
+        uses: fjogeleit/http-request-action@v1
+        with:
+          url: ${{ secrets.DEPLOY_TRIGGER_URL }}
+          method: 'POST'
       - name: Notify via slack
         uses: rtCamp/action-slack-notify@v2
         env:
