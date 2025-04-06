@@ -7,7 +7,12 @@ export default function usePostApi() {
         return client.get('/feed', {params: {cursor}});
     }
 
+    const deletePost = (postId: string) => {
+        return client.delete(`/posts/${postId}`);
+    }
+
     return {
         getFeed,
+        deletePost,
     }
 }
