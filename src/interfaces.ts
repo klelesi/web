@@ -30,6 +30,7 @@ export interface Post {
     comments: Comment[],
     createdAt: string;
     updatedAt: string;
+    lockedAt: string;
     interactions?: Interaction[];
 }
 
@@ -49,8 +50,10 @@ export interface Comment {
     html: string;
     markdown?: string,
     comments: Comment[],
+    lockedAt: string;
     createdAt: string;
     updatedAt: string;
+    deletedAt: string;
 }
 
 export interface PaginatedResult<T> {

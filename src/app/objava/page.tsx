@@ -162,12 +162,16 @@ enum ViewState {
 }
 
 function SubmitPost() {
-    const {currentUser} = useContext(AuthContext);
+    const {currentUser, permissions} = useContext(AuthContext);
     const params = useSearchParams()
     const id: string | null = params.get('id');
     const client = useClientAxios();
     const [post, setPost] = useState(null);
     const [currentViewState, setCurrentViewState] = useState(ViewState.LOADING);
+
+    function hasPermission(permission: string) {
+        return permissions.includes(permission);
+    }
 
     useEffect(() => {
         if (!currentUser) {
@@ -177,7 +181,7 @@ function SubmitPost() {
                 setCurrentViewState(ViewState.NEW_POST);
             } else {
                 client.get(`${process.env.NEXT_PUBLIC_API_URL}/posts/${id}`).then(response => response.data).then((response) => {
-                    if (isCurrentUserAuthor(currentUser, response.data)) {
+                    if (isCurrentUserAuthor(currentUser, response.data) || hasPermission('moderate content')) {
                         setCurrentViewState(ViewState.EDIT_POST);
                         setPost(response.data);
                     } else {

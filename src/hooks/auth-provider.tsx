@@ -8,6 +8,7 @@ export const AuthContext = createContext<{
     currentUser: Auth | null,
     logoutUser: () => void,
     loginUser: (user: Auth) => void,
+    permissions: string[],
     clear: () => void,
 }>({
     currentUser: null,
@@ -17,24 +18,47 @@ export const AuthContext = createContext<{
     },
     clear: () => {
     },
+    permissions: [],
 });
 
-const STORAGE_KEY = 'auth';
+const STORAGE_KEY_AUTH = 'auth';
+const STORAGE_KEY_PERMISSIONS = 'permissions';
 
 export function AuthProvider({children}: { children: ReactNode }) {
-    const {logout} = useUserApi();
+    const {logout, getPermissions} = useUserApi();
     const [currentUser, setCurrentUser] = useState<Auth | null>(null)
+    const [permissions, setPermissions] = useState<string[]>([])
 
     useEffect(() => {
         const storedUser = getStoredUser();
+        const storedPermissions = getStoredPermissions();
 
         if (storedUser) {
             setCurrentUser(storedUser);
         }
+
+        if (storedPermissions) {
+            setPermissions(storedPermissions);
+        } else {
+            getPermissions().then((response) => {
+                localStorage.setItem(STORAGE_KEY_PERMISSIONS, JSON.stringify(response.data.data.permissions));
+                setPermissions(response.data.data.permissions);
+            });
+        }
     }, [])
 
+    const getStoredPermissions = () => {
+        const fromStorage = localStorage.getItem(STORAGE_KEY_PERMISSIONS);
+
+        if (fromStorage) {
+            return JSON.parse(fromStorage);
+        }
+
+        return null;
+    };
+
     const getStoredUser = () => {
-        const fromStorage = localStorage.getItem(STORAGE_KEY);
+        const fromStorage = localStorage.getItem(STORAGE_KEY_AUTH);
 
         if (fromStorage) {
             return JSON.parse(fromStorage);
@@ -54,13 +78,13 @@ export function AuthProvider({children}: { children: ReactNode }) {
 
     const loginUser = (user: Auth) => {
         if (user) {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(user));
+            localStorage.setItem(STORAGE_KEY_AUTH, JSON.stringify(user));
             setCurrentUser(user);
         }
     }
 
     return (
-        <AuthContext.Provider value={{currentUser, loginUser, logoutUser, clear}}>
+        <AuthContext.Provider value={{currentUser, loginUser, logoutUser, clear, permissions}}>
             {children}
         </AuthContext.Provider>
     );

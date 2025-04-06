@@ -12,6 +12,10 @@ export default function useUserApi() {
         return client.get('/user');
     }
 
+    const getPermissions = () => {
+        return client.get('/user/permissions');
+    }
+
     const updateProfile = (data: { name: string }) => {
         return client.put('/user', data);
     }
@@ -54,5 +58,6 @@ export default function useUserApi() {
         login,
         passwordRequest,
         passwordReset,
+        getPermissions,
     }
 }

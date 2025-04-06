@@ -15,9 +15,7 @@ export default async function Post({params}: { params: Promise<{ slug: string }>
 
     try {
         post = (await (await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts/${slug}`)).json()).data;
-    } catch (e) {
-
-    }
+    } catch (e) {}
 
     return <div className="grid grid-cols-1 gap-3 container max-w-[700px] pt-3">
         {post && (<>
@@ -25,9 +23,14 @@ export default async function Post({params}: { params: Promise<{ slug: string }>
                 {post.postType == PostType.MARKDOWN ? <MarkdownPost post={post}/> : null}
                 {post.postType == PostType.LINK ? <LinkPost post={post}/> : null}
 
-                <div className="mt-6 text-right">
+                <div className="mt-6 flex flex-row justify-between items-center">
+                    <div>
+                        {post.lockedAt && (<p className={'text-sm italic'}>Prispevek je zaklenjen.</p> )}
+                    </div>
+
                     <ReportContentDialog post={post}/>
                 </div>
+
             </Card>
 
             {post ? (<PostComments post={post}/>) : null}
