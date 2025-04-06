@@ -4,19 +4,28 @@ import {isYesterday} from "date-fns/isYesterday";
 import {format} from "date-fns";
 import {Auth, Comment, Post} from "@/interfaces";
 
-export const getNumberOfCommentsText = (numberOfComments: number) => {
+export const getNumberOfCommentsText = (numberOfComments: number): string => {
     let text = 'komentarjev';
+    let base = numberOfComments;
 
-    if (numberOfComments == 1) {
+    if (base > 100) {
+        base = base % 100;
+    }
+
+    if (base == 1) {
         text = 'komentar';
-    } else if (numberOfComments == 2) {
+    } else if (base == 2) {
         text = 'komentarja';
+    } else if (base == 3) {
+        text = 'komentarji';
+    } else if (base == 4) {
+        text = 'komentarji';
     }
 
     return `${numberOfComments} ${text}`
 }
 
-export const humanReadableDate = (dateISO: string) => {
+export const humanReadableDate = (dateISO: string): string => {
     const cleanedCreatedAt = dateISO.replace(/\.\d+Z$/, 'Z');
     const date: Date = parseISO(cleanedCreatedAt) as Date;
 
@@ -32,5 +41,5 @@ export const humanReadableDate = (dateISO: string) => {
 }
 
 export const isCurrentUserAuthor = (auth: Auth | null, item: Post | Comment) => {
-    return auth && auth.id == item.author.id;
+    return !!(auth && auth.id === item.author.id);
 }
