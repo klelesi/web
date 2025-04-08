@@ -18,18 +18,15 @@ export default function Navbar() {
                     </Link>
 
                     <div className="flex flex-row items-center font-semibold">
-                        <Link className={'mx-2 hover:underline'} href={'/place'}>Plače</Link>
-                        <Link className={'mx-2 hover:underline'} href={'https://blog.klele.si'}>Devlog</Link>
-
                         {currentUser && (<>
-                            <Link className={'mx-2 btn-primary btn'} href={'/objava'}>Objavi prispevek</Link>
-                            <Link className={'mx-2 hover:underline'} href={'/profil'}>Profil</Link>
-                            <button className={'mx-2 btn btn-sm btn-primary-outline'} onClick={() => logoutUser()}>Odjava
-                            </button>
+                            <Link className={'btn btn-primary btn-sm mr-4'} href={'/objava'}>Objavi prispevek</Link>
+                            <Link className={'btn btn-link btn-sm'} href={'/profil'}>Profil</Link>
+                            <button className={'btn btn-link btn-sm'} onClick={() => logoutUser()}>Odjava</button>
                         </>)}
 
                         {!currentUser && (<>
                             <Link className={'mx-2 btn btn-sm btn-primary-outline'} href={'/prijava'}>Prijava</Link>
+                            <Link className={'mx-2 btn btn-sm btn-primary'} href={'/registracija'}>Registracija</Link>
                         </>)}
                     </div>
                 </div>

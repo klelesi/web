@@ -1,0 +1,47 @@
+.btn {
+    @apply px-4 py-1 border border-transparent font-bold leading-normal tracking-wide text-base text-center;
+}
+
+.btn-sm {
+    @apply px-3 py-1 text-sm text-center;
+}
+
+.btn-link {
+    @apply border-2 border-transparent text-black bg-transparent;
+}
+
+.btn-link:hover:not(:disabled) {
+    @apply border-black;
+}
+
+.btn-link:disabled {
+    @apply cursor-not-allowed text-gray;
+}
+
+.btn-primary {
+    @apply border-2 border-black text-white bg-red;
+    box-shadow: 4px 4px rgba(0, 0, 0, 0.15);
+}
+
+.btn-primary:hover:not(:disabled) {
+    @apply bg-red-dark;
+}
+
+.btn-primary:disabled {
+    @apply cursor-not-allowed border-black text-white;
+    background-color: theme('colors.gray');
+}
+
+.btn-primary-outline {
+    @apply border-2 border-black text-black bg-transparent;
+    box-shadow: 4px 4px rgba(0, 0, 0, 0.15);
+}
+
+.btn-primary-outline:hover:not(:disabled) {
+    @apply bg-red text-white;
+}
+
+.btn-primary-outline:disabled {
+    @apply cursor-not-allowed border-gray text-gray;
+    background-color: white;
+}
