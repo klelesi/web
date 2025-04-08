@@ -3,7 +3,7 @@ import {ChangeEvent, useState} from "react";
 import {UnsafeHTML} from "@/components/unsafe-html";
 import useClientAxios from "@/hooks/useClientAxios";
 import {Card} from "@/components/card";
-import {Post} from "@/interfaces";
+import { MarkdownPost, Post } from "@/interfaces";
 
 export default function FormMarkdown(props: {
     label: string,
@@ -25,7 +25,7 @@ export default function FormMarkdown(props: {
         setInPreview(true);
         setIsLoading(true);
 
-        client.post(`/markdown`, {markdown: props.value}).then((response) => response.data.data as Post).then((res: Post) => {
+        client.post(`/markdown`, {markdown: props.value}).then((response) => response.data.data as MarkdownPost).then((res: MarkdownPost) => {
                 setPreviewHtml(res.html!);
                 setIsLoading(false);
             }

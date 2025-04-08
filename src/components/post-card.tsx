@@ -2,7 +2,7 @@ import {Card} from "@/components/card";
 import {PostMeta} from "@/components/post-meta";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faComments, faLink, faLock} from "@fortawesome/free-solid-svg-icons";
-import {Post, PostType} from "@/interfaces";
+import { LinkPost, Post, PostType } from "@/interfaces";
 import {getNumberOfCommentsText} from "@/utils";
 
 export interface PostCardConfig {
@@ -35,9 +35,9 @@ export const PostCard = ({post, config = {hideActions: false}}: { post: Post, co
                     </a>
 
                     {post.postType === PostType.LINK && (<>
-                        <a href={post.url} rel={'noreferrer nofollow'}
+                        <a href={(post as LinkPost).url} rel={'noreferrer nofollow'}
                            className={'text-sm text-dark-gray hover:text-red'}>
-                            <FontAwesomeIcon icon={faLink}/> {post.urlHost}
+                            <FontAwesomeIcon icon={faLink}/> {(post as LinkPost).urlHost}
                         </a>
                     </>)}
                 </div>)}

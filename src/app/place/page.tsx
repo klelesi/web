@@ -6,9 +6,7 @@ const posts: Post[] = [
         id: 'place/2024',
         title: "Plače slovenskih razvijalcev 2024",
         slug: '/place/2024',
-        author: {
-            name: 'Miha Medven',
-        },
+        author: {name: 'Miha Medven', username: 'aweCodeMan'},
         createdAt: '2024-10-21 08:00',
     },
     {
@@ -26,9 +24,7 @@ const posts: Post[] = [
         title: "Plače slovenskih razvijalcev 2022",
         slug: '/place/2022',
         postType: 0,
-        author: {
-            name: 'Miha Medven',
-        },
+        author: {name: 'Miha Medven', username: 'aweCodeMan'},
         createdAt: '2022-11-12 10:00',
     },
     {
@@ -36,9 +32,7 @@ const posts: Post[] = [
         title: "Plače slovenskih razvijalcev 2021",
         slug: '/place/2021',
         postType: 0,
-        author: {
-            name: 'Miha Medven',
-        },
+        author: {name: 'Miha Medven', username: 'aweCodeMan'},
         createdAt: '2021-10-18 10:00',
     }
 ] as Post[];

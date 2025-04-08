@@ -7,6 +7,7 @@ export interface Auth {
   id: string;
   email: string;
   name: string;
+  username: string;
 }
 
 export interface Post {
@@ -26,6 +27,7 @@ export interface Post {
 export interface Author {
   id: string;
   name: string;
+  username: string;
 }
 
 export interface MarkdownPost extends Post {

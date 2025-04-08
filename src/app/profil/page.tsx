@@ -40,7 +40,7 @@ export default function Profile() {
 
     useEffect(() => {
         getProfile().then((response) => response.data.data).then((profile) => {
-                setProfile(profile as { id: string, name: string, email: string });
+                setProfile(profile as { id: string, name: string, email: string, username: string });
                 const newForm = {name: profile.name};
                 setForm(() => newForm);
                 setValidation(schema.safeParse(newForm));
@@ -56,7 +56,7 @@ export default function Profile() {
     function update() {
         setState(State.SAVING);
         updateProfile(form).then((response) => response.data.data).then((profile) => {
-                setProfile(profile as { id: string, name: string, email: string });
+                setProfile(profile as { id: string, name: string, email: string, username: string });
                 const newForm = {name: profile.name};
                 setForm(() => newForm);
                 setValidation(schema.safeParse(newForm));
@@ -86,6 +86,11 @@ export default function Profile() {
                                     <label>
                                         Email
                                         <input type="text" disabled={true} value={profile?.email}/>
+                                    </label>
+
+                                    <label>
+                                      Uporabniško ime
+                                      <input type="text" disabled={true} value={profile?.username}/>
                                     </label>
 
                                     <FormInput label={'Ime'} type={'text'} name={'name'} value={form.name}

@@ -12,7 +12,7 @@ import FormInput from "@/components/form-input";
 import FormMarkdown from "@/components/form-markdown";
 import MarkdownInstructions from "@/components/markdown-instructions";
 import {useRouter, useSearchParams} from "next/navigation";
-import {Post, PostType} from "@/interfaces";
+import { LinkPost, MarkdownPost, Post, PostType } from "@/interfaces";
 import Shimmer from "@/components/shimmer";
 import {isCurrentUserAuthor} from "@/utils";
 import {AuthContext} from "@/hooks/auth-provider";
@@ -33,15 +33,15 @@ const postSchema = z.discriminatedUnion('postType', [
     }),
 ]);
 
-const PostForm = ({post}: { post?: Post | null }) => {
+const PostForm = ({post}: { post?: MarkdownPost | LinkPost | null }) => {
     const client = useClientAxios();
     const router = useRouter();
 
     const postForm = post ? {
         postType: post.postType,
         title: post.title,
-        markdown: post.markdown ?? '',
-        url: post.url ?? ''
+        markdown: (post as MarkdownPost).markdown ?? '',
+        url: (post as LinkPost).url ?? ''
     } : {
         postType: PostType.MARKDOWN,
         title: '',

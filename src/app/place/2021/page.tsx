@@ -28,7 +28,7 @@ export default function Salary2021() {
                         <div className="flex flex-row">
                             <div className="flex flex-col">
                                 <div className="mt-1">
-                                    <PostMeta author={{name: 'Miha Medven'}} createdAt={'2021-10-18 10:00'}/>
+                                    <PostMeta author={{name: 'Miha Medven', username: 'aweCodeMan'}} createdAt={'2021-10-18 10:00'}/>
                                 </div>
                             </div>
                         </div>
