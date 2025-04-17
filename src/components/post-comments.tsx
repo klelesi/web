@@ -22,7 +22,7 @@ const NewCommentSection = ({post, onCommentAdded}: { post: Post, onCommentAdded:
 
 const CommentsSection = ({post}: { post: Post }) => {
     return <>
-        <h2 className={'text-2xl font-bold mb-4 mt-3'}>Komentarji ({post.numberOfComments})</h2>
+        <h2 className={'text-2xl font-bold mb-4 mt-6'}>Komentarji ({post.numberOfComments})</h2>
 
         {!post.lockedAt && post.comments.length === 0 ? <NotificationCard title={'Oh. Na tem prispevku ni' +
             ' komentarjev.'} body={'Bodi faca in napiši prvega.'}/> : null}
