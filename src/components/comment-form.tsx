@@ -7,6 +7,7 @@ import useClientAxios from "@/hooks/useClientAxios";
 import {Comment, Post} from "@/interfaces";
 import {AuthContext} from "@/hooks/auth-provider";
 import {NotificationCard} from "@/components/notification-card";
+import { LoginNotificationCard } from "@/components/login-notification-card";
 
 const commentForm = z.object({
     markdown: z.string().min(1),
@@ -64,8 +65,7 @@ export function CommentForm({post, comment, parentId, onSuccess}: {
     }
 
     return <div>
-        {!currentUser ? <NotificationCard title={'Hah. Brez prijave ne bo šlo.'} body={'Za komentiranje potrebuješ' +
-            ' prijavo.'}/> : null}
+        {!currentUser ? <LoginNotificationCard/> : null}
 
         {currentUser ? <>
             <form action="" onSubmit={(event) => submit(event)}>
