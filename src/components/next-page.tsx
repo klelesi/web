@@ -36,7 +36,7 @@ export const NextPage = ({cursor}: { cursor: string | null }) => {
     }
 
     return <>
-        <div ref={ref} className={'absolute'}></div>
+        <div ref={ref}></div>
         {state === State.LOADING && (<>
             <Shimmer height={'3rem'}/>
         </>)}
