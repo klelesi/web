@@ -64,12 +64,14 @@ const ShowPost = ({ post }: { post: Post }) => {
         </>
 
         <div className="mt-6 flex flex-row justify-between items-center">
-          {isLocked(post) && (
-            <p className={"text-sm italic"}>
-              <FontAwesomeIcon icon={faLock} className={"mr-2"} />
-              Prispevek je zaklenjen.
-            </p>
-          )}
+          <div>
+            {isLocked(post) && (
+              <p className={"text-sm italic"}>
+                <FontAwesomeIcon icon={faLock} className={"mr-2"} />
+                Prispevek je zaklenjen.
+              </p>
+            )}
+          </div>
 
           <ReportContentDialog post={post} />
         </div>

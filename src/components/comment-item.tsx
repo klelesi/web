@@ -68,12 +68,11 @@ export function CommentItem({comment, post}: { comment: Comment, post: Post }) {
         return permissions.includes(permission);
     }
 
-    return <Card>
+    return <div>
         {!comment.deletedAt && (<div className="mb-2 flex flex-row justify-between items-center">
             <PostMeta author={localComment.author} createdAt={localComment.createdAt}/>
 
             <div className="flex flex-row">
-
                 {(currentState === State.IDLE && isCurrentUserAuthor(currentUser, localComment) && !isLocked()) ?
                     <button onClick={() => setCurrentState(State.EDITING)} className={'btn' +
                         ' btn-sm' +
@@ -121,12 +120,14 @@ export function CommentItem({comment, post}: { comment: Comment, post: Post }) {
                          onSuccess={(success) => updateComment(success)}/>
         </div> : null}
 
-        {localComment.comments.length > 0 ? <div className={'pl-4 mt-3'}>
+        <hr className="my-4"/>
+
+        {localComment.comments.length > 0 ? <div className={'pl-6 mt-8'}>
             <div className="grid grid-cols-1 gap-3">
                 {localComment.comments.map((subComment: Comment) => {
                     return <CommentItem key={subComment.id} comment={subComment} post={post}/>
                 })}
             </div>
         </div> : null}
-    </Card>;
+    </div>;
 }

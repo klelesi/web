@@ -59,7 +59,7 @@ export const ReportContentDialog = ({post, comment}: { post?: Post, comment?: Co
     }
 
     return <>
-        <button className="btn btn-sm btn-primary-outline" onClick={() => show()}
+        <button className="btn btn-sm btn-link" onClick={() => show()}
                 disabled={currentState !== State.IDLE}>{currentState === State.IDLE ? 'Prijavi vsebino' : 'Prijava' +
             ' oddana'}</button>
 
