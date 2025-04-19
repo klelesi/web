@@ -69,7 +69,7 @@ export function CommentItem({comment, post}: { comment: Comment, post: Post }) {
     }
 
     return <div>
-        {!comment.deletedAt && (<div className="mb-2 flex flex-row justify-between items-center">
+        {!comment.deletedAt && (<div id={comment.id} className="mb-2 flex flex-row justify-between items-center">
             <PostMeta author={localComment.author} createdAt={localComment.createdAt}/>
 
             <div className="flex flex-row">

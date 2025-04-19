@@ -78,3 +78,11 @@ export interface ValidationErrorResponse {
   message: string;
   errors: { [key: string]: string[] };
 }
+
+export interface Notification {
+  id: string;
+  type: string;
+  post: Post;
+  target: Comment;
+  readAt: string | null;
+}
