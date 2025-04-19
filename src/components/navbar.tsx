@@ -22,7 +22,7 @@ export default function Navbar() {
     <>
       <nav className={"bg-white w-full border-b border-black px-3 flex flex-row justify-between items-center"} role="navigation">
         <div className={"py-5 flex flex-row justify-between items-center w-full container"}>
-          <Link href="/" className={"btn-logo flex flex-row items-baseline"}>
+          <Link href="/" className={"btn-logo flex flex-row items-baseline"} title={'Domov'}>
             <Logo />
           </Link>
 

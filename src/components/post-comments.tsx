@@ -15,7 +15,7 @@ const NewCommentSection = ({post, onCommentAdded}: { post: Post, onCommentAdded:
     }
 
     return <>
-        <h5 className={'text-xl font-bold my-2'}>Nov komentar</h5>
+        <h2 className={'text-xl font-bold my-2'}>Nov komentar</h2>
         <CommentForm onSuccess={(comment) => onCommentAdded(comment)} post={post}/>
     </>
 }

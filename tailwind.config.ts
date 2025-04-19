@@ -14,7 +14,7 @@ export default {
         'red-dark': '#E14961',
         beige: '#F9F2E9',
         gray: '#BBBBBB',
-        'dark-gray': '#7D7D7D',
+        'dark-gray': '#8c8c8c',
         'light-gray': "#F3F3F3",
         error: "#EA324E",
         orange: '#FF9314',

@@ -7,7 +7,7 @@ export default function Footer() {
         <>
             <footer className={'bg-white w-full border-t border-black'}>
                 <div className={'py-1 text-center w-full container text-sm'}>
-                    Klele.si | <Link className={'hover:text-red'} href={'/pravila'}>Pravila</Link> | <Link className={'hover:text-red'} href={'https://github.com/klelesi'}><FontAwesomeIcon icon={faGithub}/></Link>
+                    Klele.si | <Link className={'hover:text-red'} href={'/pravila'}>Pravila</Link> | <Link className={'hover:text-red'} href={'https://github.com/klelesi'} title={'GitHub'}><FontAwesomeIcon icon={faGithub}/></Link>
                 </div>
             </footer>
         </>

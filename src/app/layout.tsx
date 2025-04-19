@@ -12,13 +12,18 @@ config.autoAddCss = false;
 export const metadata: Metadata = {
   title: "Klele.si | Kjer so dobre debate doma",
   description: "Kjer so dobre debate doma.",
+  openGraph: {
+    siteName: "Klele.si",
+    type: "website",
+    images: "/images/seo.png",
+  },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="sl_SI">
+    <html lang="sl">
       <head>
-        <title>Klele.si</title>
+        <title>Klele.si | Kjer so dobre debate doma</title>
         <link rel="shortcut icon" type="image/jpg" href="/images/favicon.png" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />

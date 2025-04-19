@@ -14,11 +14,10 @@ export const PostCard = ({post, config = {hideActions: false}}: { post: Post, co
         <Card backgroundColor={(post.interactions && post.interactions.length >= 1) ? 'rgba(255,255,255,0.15)' : ''}>
             <div className="grid grid-cols-1 gap-2">
                 <div className="flex flex-row justify-between">
-
                     <a href={`${post.slug}`} className={'hover:text-red'}>
-                        <h3 className="text-xl md:text-2xl font-bold traciking-tight leading-tight flex items-center">
+                        <h2 className="text-xl md:text-2xl font-bold traciking-tight leading-tight flex items-center">
                             {post.title}
-                        </h3>
+                        </h2>
                     </a>
 
                     {post.lockedAt && (<span title={'Prispevek je zaklenjen'}><FontAwesomeIcon icon={faLock} className={'text-sm mr-2'}/></span>)}
