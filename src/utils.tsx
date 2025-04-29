@@ -2,7 +2,8 @@ import { parseISO } from "date-fns/fp/parseISO";
 import { isToday } from "date-fns/isToday";
 import { isYesterday } from "date-fns/isYesterday";
 import { format } from "date-fns";
-import { Auth, Comment, Post } from "@/interfaces";
+import { Auth, Comment, Interaction, Post } from "@/interfaces";
+import { UpvoteDownvoteState } from "@/components/upvote-downvote";
 
 export const getNumberOfCommentsText = (numberOfComments: number): string => {
   let text = "komentarjev";
@@ -46,4 +47,24 @@ export const isCurrentUserAuthor = (auth: Auth | null, item: Post | Comment) => 
 
 export const isLocked = (item: Post | Comment) => {
   return !!item.lockedAt;
+};
+
+export const resolveUpvoteDownvoteState = (interactions: Interaction[] | undefined) => {
+  if (!interactions || interactions.length === 0) {
+    return UpvoteDownvoteState.INDIFFERENT;
+  }
+
+  const validInteractions = interactions.filter((item) => ["upvote", "downvote"].includes(item.type));
+
+  if (validInteractions.length > 0) {
+    const firstInteraction = validInteractions[0];
+
+    if (firstInteraction.type === "upvote") {
+      return UpvoteDownvoteState.UPVOTE;
+    } else if (firstInteraction.type === "downvote") {
+      return UpvoteDownvoteState.DOWNVOTE;
+    }
+  }
+
+  return UpvoteDownvoteState.INDIFFERENT;
 };

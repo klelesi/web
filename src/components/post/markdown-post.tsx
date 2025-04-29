@@ -2,6 +2,8 @@ import { PostMeta } from "@/components/post-meta";
 import PostAuthorActions from "@/components/post-author-actions";
 import { UnsafeHTML } from "@/components/unsafe-html";
 import { MarkdownPost as MarkdownPostInterface } from "@/interfaces";
+import { UpvoteDownvote } from "@/components/upvote-downvote";
+import { resolveUpvoteDownvoteState } from "@/utils";
 
 export const MarkdownPost = ({ post }: { post: MarkdownPostInterface }) => {
   return (
@@ -13,7 +15,12 @@ export const MarkdownPost = ({ post }: { post: MarkdownPostInterface }) => {
 
       <hr className={"my-2"} />
 
-      <h1 className={"text-5xl font-bold mb-8"}>{post.title}</h1>
+      <div className="flex flex-row items-center justify-center mb-8">
+        <div className="mr-2">
+          <UpvoteDownvote item={post} initialState={resolveUpvoteDownvoteState(post.interactions)}/>
+        </div>
+        <h1 className={"text-5xl font-bold "}>{post.title}</h1>
+      </div>
 
       <div className={"prose"}>
         <UnsafeHTML html={post.html} />

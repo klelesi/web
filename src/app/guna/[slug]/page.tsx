@@ -1,15 +1,7 @@
-import { LinkPost as LinkPostInterface, MarkdownPost as MarkdownPostInterface, Post, PostType } from "@/interfaces";
+import { Post } from "@/interfaces";
 import { NotificationCard } from "@/components/notification-card";
 import { Metadata } from "next";
-import { Card } from "@/components/card";
-import { MarkdownPost } from "@/components/post/markdown-post";
-import { LinkPost } from "@/components/post/link-post";
-import { ReportContentDialog } from "@/components/report-content-dialog";
-import { PostComments } from "@/components/post-comments";
-import PostUserInteractions from "@/components/post-user-interactions";
-import { isLocked } from "@/utils";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLock } from "@fortawesome/free-solid-svg-icons";
+import { ShowPost } from "@/components/show-post";
 
 export const revalidate = 0;
 
@@ -53,36 +45,6 @@ export default async function Page({ params }: Params) {
     </div>
   );
 }
-
-const ShowPost = ({ post }: { post: Post }) => {
-  return (
-    <>
-      <Card>
-        <>
-          {post.postType == PostType.MARKDOWN ? <MarkdownPost post={post as MarkdownPostInterface} /> : null}
-          {post.postType == PostType.LINK ? <LinkPost post={post as LinkPostInterface} /> : null}
-        </>
-
-        <div className="mt-6 flex flex-row justify-between items-center">
-          <div>
-            {isLocked(post) && (
-              <p className={"text-sm italic"}>
-                <FontAwesomeIcon icon={faLock} className={"mr-2"} />
-                Prispevek je zaklenjen.
-              </p>
-            )}
-          </div>
-
-          <ReportContentDialog post={post} />
-        </div>
-      </Card>
-
-      <PostComments post={post} />
-
-      <PostUserInteractions post={post} />
-    </>
-  );
-};
 
 const MissingPost = () => {
   return <NotificationCard title={"Opala. Ta prispevek ne obstaja!"} body={"Mogoče je nekoč obstajal, mogoče nikoli ni obstajal. Napaka 404."} />;

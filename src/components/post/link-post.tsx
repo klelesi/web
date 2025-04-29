@@ -4,6 +4,8 @@ import { Card } from "@/components/card";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLink } from "@fortawesome/free-solid-svg-icons";
 import { LinkPost as LinkPostInterface } from "@/interfaces";
+import { UpvoteDownvote } from "@/components/upvote-downvote";
+import { resolveUpvoteDownvoteState } from "@/utils";
 
 export const LinkPost = ({ post }: { post: LinkPostInterface }) => {
   const openGraphImage = post.urlMeta?.openGraph["og:image"] ?? null;
@@ -19,7 +21,10 @@ export const LinkPost = ({ post }: { post: LinkPostInterface }) => {
 
       <hr className={"my-2"} />
 
-      <h1 className={"text-5xl font-bold mb-8"}>{post.title}</h1>
+      <div className="flex flex-row">
+        <UpvoteDownvote item={post} initialState={resolveUpvoteDownvoteState(post.interactions)}/>
+        <h1 className={"text-5xl font-bold mb-8"}>{post.title}</h1>
+      </div>
 
       <a href={post.url} title={openGraphTitle ?? post.title} rel={"noreferrer nofollow"} target={"_blank"}>
         <Card>

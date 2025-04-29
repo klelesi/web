@@ -20,6 +20,7 @@ export interface Post {
   comments: Comment[];
   createdAt: string;
   updatedAt: string;
+  score: number;
   lockedAt: string;
   interactions?: Interaction[];
 }
@@ -45,7 +46,7 @@ export interface LinkPost extends Post {
 }
 
 export interface Interaction {
-  type: "view";
+  type: "view" | "upvote" | "downvote";
   interactableId?: string;
   createdAt: string;
   updatedAt: string;
@@ -58,6 +59,7 @@ export interface Comment {
   markdown: string;
   comments: Comment[];
   lockedAt: string;
+  score: number;
   createdAt: string;
   updatedAt: string;
   deletedAt: string;

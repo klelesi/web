@@ -32,8 +32,7 @@ export default function AuthEnhancer({posts}: { posts: Post[] }) {
                 });
             });
         }
-    }, [currentUser]);
-
+    }, [currentUser, getPostsInteractions, posts]);
 
     return <PostList posts={copy}></PostList>
 }
