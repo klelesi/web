@@ -15,11 +15,11 @@ export const MarkdownPost = ({ post }: { post: MarkdownPostInterface }) => {
 
       <hr className={"my-2"} />
 
-      <div className="flex flex-row items-center justify-center mb-8">
+      <div className="flex flex-row items-center justify-center mb-4 md:mb-8">
         <div className="mr-2">
           <UpvoteDownvote item={post} initialState={resolveUpvoteDownvoteState(post.interactions)}/>
         </div>
-        <h1 className={"text-5xl font-bold "}>{post.title}</h1>
+        <h1 className={"text-2xl md:text-5xl font-bold"}>{post.title}</h1>
       </div>
 
       <div className={"prose"}>

@@ -21,9 +21,9 @@ export const LinkPost = ({ post }: { post: LinkPostInterface }) => {
 
       <hr className={"my-2"} />
 
-      <div className="flex flex-row">
+      <div className="flex flex-row items-center justify-center mb-4 md:mb-8">
         <UpvoteDownvote item={post} initialState={resolveUpvoteDownvoteState(post.interactions)}/>
-        <h1 className={"text-5xl font-bold mb-8"}>{post.title}</h1>
+        <h1 className={"text-2xl md:text-5xl font-bold"}>{post.title}</h1>
       </div>
 
       <a href={post.url} title={openGraphTitle ?? post.title} rel={"noreferrer nofollow"} target={"_blank"}>

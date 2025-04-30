@@ -34,7 +34,7 @@ export default async function Page() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-3 container w-page">
+      <div className="grid grid-cols-1 gap-2 container w-page">
         {paginatedResult.data.length === 0 && <NotificationCard title={"Trenutno ni prispevkov."} body={"Mogoče je čas, da spišeš prvega."} />}
 
         <AuthEnhancer posts={paginatedResult.data} />

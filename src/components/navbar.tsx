@@ -28,7 +28,7 @@ export default function Navbar() {
 
           <div className="flex flex-row items-center font-semibold">
             {currentUser && (
-              <>
+              <div className={'flex flex-col sm:flex-row justify-center items-center'}>
                 <Link className={"btn btn-primary btn-sm mr-4"} href={"/objava"}>
                   Objavi prispevek
                 </Link>
@@ -41,7 +41,7 @@ export default function Navbar() {
                 <button className={"btn btn-link btn-sm"} onClick={() => logoutUser()}>
                   Odjava
                 </button>
-              </>
+              </div>
             )}
 
             {!currentUser && (
