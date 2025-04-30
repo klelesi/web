@@ -58,7 +58,7 @@ export default function PostAuthorActions({item}: { item: Post }) {
     }
 
     return <div className="flex flex-row">
-        {isCurrentUserAuthor(currentUser, item) || hasPermission('moderate content') && (<>
+        {(isCurrentUserAuthor(currentUser, item) || hasPermission('moderate content')) && (<>
             <a href={`/objava?id=${item.id}`} className={'mr-2'}>
                 <button className="btn-sm btn-primary-outline" disabled={currentViewState !== ViewState.IDLE}>Uredi</button>
             </a>
@@ -71,7 +71,7 @@ export default function PostAuthorActions({item}: { item: Post }) {
                 className="btn-sm btn-primary-outline mr-2">{item.lockedAt ? 'Odkleni' : 'Zakleni'}           </button>
         </>)}
 
-        {isCurrentUserAuthor(currentUser, item) || hasPermission('delete content') && (<>
+        {(isCurrentUserAuthor(currentUser, item) || hasPermission('delete content')) && (<>
             <button
                 disabled={currentViewState !== ViewState.IDLE}
                 onClick={() => deleteItem()}
