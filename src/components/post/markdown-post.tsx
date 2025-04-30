@@ -19,7 +19,7 @@ export const MarkdownPost = ({ post }: { post: MarkdownPostInterface }) => {
         <div className="mr-2">
           <UpvoteDownvote item={post} initialState={resolveUpvoteDownvoteState(post.interactions)}/>
         </div>
-        <h1 className={"text-2xl md:text-5xl font-bold"}>{post.title}</h1>
+        <h1 className={"text-2xl md:text-5xl font-bold flex-1"}>{post.title}</h1>
       </div>
 
       <div className={"prose"}>

@@ -129,7 +129,6 @@ const PostForm = ({post}: { post?: MarkdownPost | LinkPost | null }) => {
 
             {form.postType === PostType.MARKDOWN && (<>
                 <div className="mb-4">
-
                     <FormMarkdown label="Vsebina:" name="markdown" value={form.markdown}
                                   onChange={onFormChange}
                                   error={errors.error?.flatten().fieldErrors.markdown?.join(' ')}
@@ -140,7 +139,7 @@ const PostForm = ({post}: { post?: MarkdownPost | LinkPost | null }) => {
                 <MarkdownInstructions/></>)}
 
 
-            <hr className="mt-10 mb-2"/>
+            <hr className="mt-3 mb-2"/>
 
             <div className="text-right">
                 <button className="btn btn-primary" type="submit"
