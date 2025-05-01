@@ -117,7 +117,8 @@ export function CommentItem({comment, post}: { comment: Comment, post: Post }) {
             <CommentForm comment={currentState === State.EDITING ? localComment : null}
                          post={post}
                          parentId={localComment.id}
-                         onSuccess={(success) => updateComment(success)}/>
+                         onSuccess={(success) => updateComment(success)}
+                         onClose={() => setCurrentState(State.IDLE)}/>
         </div> : null}
 
         <hr className="my-4"/>

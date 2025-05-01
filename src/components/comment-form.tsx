@@ -6,7 +6,6 @@ import { FormEvent, useContext, useState } from "react";
 import useClientAxios from "@/hooks/useClientAxios";
 import { Comment, Post } from "@/interfaces";
 import { AuthContext } from "@/hooks/auth-provider";
-import { NotificationCard } from "@/components/notification-card";
 import { LoginNotificationCard } from "@/components/login-notification-card";
 import MarkdownInstructions from "@/components/markdown-instructions";
 
@@ -19,11 +18,14 @@ export function CommentForm({
   comment,
   parentId,
   onSuccess,
+  onClose,
 }: {
   post: Post;
   comment?: Comment | null;
   parentId?: string | null;
   onSuccess: (comment: Comment) => void;
+  onClose?: () => void,
+
 }) {
   const client = useClientAxios();
   const [form, setForm] = useState({ markdown: comment?.markdown ?? "" });
@@ -87,6 +89,11 @@ export function CommentForm({
               <MarkdownInstructions />
             </div>
             <div className="mt-2 text-right">
+              {onClose && (
+                <button type={"button"} className="btn btn-link mr-2" onClick={() => onClose()}>
+                  Prekliči
+                </button>
+              )}
               <button type={"submit"} disabled={isLoading || !commentForm.safeParse(form).success} className="btn btn-primary">
                 {comment ? "Posodobi komentar" : "Objavi komentar"}
               </button>
