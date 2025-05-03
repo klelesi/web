@@ -70,8 +70,7 @@ export function CommentItem({comment, post}: { comment: Comment, post: Post }) {
 
     return <div>
         {!comment.deletedAt && (<div id={comment.id} className="mb-2 flex flex-row justify-between items-center">
-            <PostMeta author={localComment.author} createdAt={localComment.createdAt}/>
-
+            <PostMeta author={localComment.author} createdAt={localComment.createdAt} post={post} isEdited={localComment.createdAt !== localComment.updatedAt}/>
             <div className="flex flex-row">
                 {(currentState === State.IDLE && isCurrentUserAuthor(currentUser, localComment) && !isLocked()) ?
                     <button onClick={() => setCurrentState(State.EDITING)} className={'btn' +
