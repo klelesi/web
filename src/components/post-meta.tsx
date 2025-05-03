@@ -5,7 +5,7 @@ import { Post } from "@/interfaces";
 import { useContext } from "react";
 import { AuthContext } from "@/hooks/auth-provider";
 
-export const PostMeta = ({ author, createdAt, post, isEdited = false }: { author: { id: string; name: string; username: string }; createdAt: string; post?: Post, isEdited?: boolean }) => {
+export const PostMeta = ({ author, createdAt, post, isEdited = false }: { author: { id?: string; name: string; username: string }; createdAt: string; post?: Post, isEdited?: boolean }) => {
   const { currentUser } = useContext(AuthContext);
 
   const isPostAuthor = post && post.author.id === author.id;
