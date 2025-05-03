@@ -83,7 +83,7 @@ export function CommentForm({
       {currentUser ? (
         <>
           <form action="" onSubmit={(event) => submit(event)}>
-            <FormMarkdown label={""} name={"markdown"} value={form.markdown} onChange={onChange} rows={5} disabled={isLoading} />
+            <FormMarkdown label={""} name={"markdown"} value={form.markdown} onChange={onChange} rows={5} disabled={isLoading} showPreview={false} />
 
             <div className="mt-3">
               <MarkdownInstructions />

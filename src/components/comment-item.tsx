@@ -90,9 +90,7 @@ export function CommentItem({comment, post}: { comment: Comment, post: Post }) {
             </div>
         </div>)}
 
-        {currentState !== State.EDITING ? <div className="prose">
-            <UnsafeHTML html={localComment.html}/>
-        </div> : null}
+        {currentState !== State.EDITING ? <UnsafeHTML html={localComment.html}/> : null}
 
         {(currentState === State.IDLE) ?
             <div className={'mt-2 flex flex-row items-center'}>
