@@ -1,6 +1,6 @@
 'use client';
 
-import {createContext, ReactNode, useEffect, useState} from "react";
+import { createContext, ReactNode, useCallback, useEffect, useState } from "react";
 import useUserApi from "@/hooks/useUserApi";
 import {Auth} from "@/interfaces";
 
@@ -76,12 +76,12 @@ export function AuthProvider({children}: { children: ReactNode }) {
         setCurrentUser(null);
     }
 
-    const loginUser = (user: Auth) => {
+    const loginUser = useCallback((user: Auth) => {
         if (user) {
             localStorage.setItem(STORAGE_KEY_AUTH, JSON.stringify(user));
             setCurrentUser(user);
         }
-    }
+    }, []);
 
     return (
         <AuthContext.Provider value={{currentUser, loginUser, logoutUser, clear, permissions}}>

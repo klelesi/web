@@ -8,9 +8,9 @@ export default function useUserApi() {
   const { loginUser } = useContext(AuthContext);
   const router = useRouter();
 
-  const getProfile = () => {
+  const getProfile = useCallback(() => {
     return client.get("/user");
-  };
+  }, [client]);
 
   const getPermissions = () => {
     return client.get("/user/permissions");
@@ -27,11 +27,18 @@ export default function useUserApi() {
     [client],
   );
 
+  const deleteProvider = useCallback(
+    (provider: string) => {
+      return client.delete(`/auth/${provider}`);
+    },
+    [client],
+  );
+
   const updateProfile = (data: { name: string }) => {
     return client.put("/user", data);
   };
 
-  const register = (data: { name: string; password: string; email: string }) => {
+  const register = (data: { name: string; password?: string; email: string, username:string, token?:string }) => {
     return client.post("/auth/register", data);
   };
 
@@ -51,7 +58,7 @@ export default function useUserApi() {
     return client.post("/auth/logout", {});
   };
 
-  const checkLogin = (callback = () => {}) => {
+  const checkLogin = useCallback((callback = () => {}) => {
     getProfile().then(
       (success) => {
         loginUser(success.data.data);
@@ -61,7 +68,7 @@ export default function useUserApi() {
         callback();
       },
     );
-  };
+  }, [getProfile, loginUser, router]);
 
   return {
     getProfile,
@@ -75,5 +82,6 @@ export default function useUserApi() {
     getPermissions,
     getNotifications,
     readNotification,
+    deleteProvider,
   };
 }

@@ -9,8 +9,11 @@ import { AuthContext } from "@/hooks/auth-provider";
 import { AxiosError } from "axios";
 import Shimmer from "@/components/shimmer";
 import { ValidationErrorResponse } from "@/interfaces";
+import { useSearchParams } from "next/navigation";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGithub } from "@fortawesome/free-brands-svg-icons/faGithub";
 
-const schema = z
+const registerSchema = z
   .object({
     name: z.string().min(1, "Brez imena ne bo šlo."),
     username: z.string().min(1, "Brez uporabniškega imena ne bo šlo."),
@@ -24,18 +27,31 @@ const schema = z
     path: ["passwordConfirmation"],
   });
 
+const oauthRegisterSchema = z.object({
+  name: z.string().min(1, "Brez imena ne bo šlo."),
+  username: z.string().min(1, "Brez uporabniškega imena ne bo šlo."),
+  email: z.string().email("Email mora imeti vsaj @ in zgledati kot email."),
+  confirmTOS: z.boolean().refine((data) => data, { message: "Tole je obvezno." }),
+});
+
 enum ViewState {
   SAVING,
   IDLE,
+}
+
+enum FormType {
+  REGISTER,
+  OAUTH_REGISTER,
 }
 
 interface Form {
   name: string;
   email: string;
   username: string;
-  password: string;
-  passwordConfirmation: string;
+  password?: string;
+  passwordConfirmation?: string;
   confirmTOS: boolean;
+  token?: string;
 }
 
 function RegisterForm({ onSuccess = () => {} }) {
@@ -52,10 +68,32 @@ function RegisterForm({ onSuccess = () => {} }) {
   const { register } = useUserApi();
   const { loginUser } = useContext(AuthContext);
   const [currentState, setCurrentState] = useState(ViewState.IDLE);
+  const searchParams = useSearchParams();
+  const [formType, setFormType] = useState(FormType.REGISTER);
+
+  const token = searchParams.get("token");
+
+  useEffect(() => {
+    if (token) {
+      setForm((prev) => {
+        return {
+          ...prev,
+          name: searchParams.get("name") ?? "",
+          email: searchParams.get("email") ?? "",
+          username: searchParams.get("username") ?? "",
+        };
+      });
+    }
+    setFormType(token ? FormType.OAUTH_REGISTER : FormType.REGISTER);
+  }, [token, searchParams]);
 
   const validate = (data: Form) => {
     try {
-      schema.parse(data);
+      if (formType == FormType.OAUTH_REGISTER) {
+        oauthRegisterSchema.parse(data);
+      } else if (formType == FormType.REGISTER) {
+        registerSchema.parse(data);
+      }
       setValidation(null);
     } catch (e) {
       setValidation(e as ZodError);
@@ -81,7 +119,15 @@ function RegisterForm({ onSuccess = () => {} }) {
     if (validate(form)) {
       setCurrentState(ViewState.SAVING);
 
-      register(form).then(
+      const formData: Form = {...form};
+      if(formType == FormType.OAUTH_REGISTER) {
+        formData.token = token ?? '';
+        delete formData.password;
+        delete formData.passwordConfirmation;
+      }
+
+
+      register(formData).then(
         (response) => {
           loginUser(response.data.data);
           if (onSuccess) {
@@ -101,7 +147,7 @@ function RegisterForm({ onSuccess = () => {} }) {
   return (
     <div className="py-6">
       <div className="text-center">
-        <h1 className={"text-3xl font-bold mb-6"}>Registracija</h1>
+        <h1 className={"text-3xl font-bold mb-6"}>{formType === FormType.REGISTER ? "Registracija" : "Dokončaj registracijo"}</h1>
       </div>
 
       <form action="" onSubmit={(event) => submit(event)}>
@@ -137,26 +183,30 @@ function RegisterForm({ onSuccess = () => {} }) {
           disabled={currentState === ViewState.SAVING}
         />
 
-        <FormInput
-          label={"Geslo:"}
-          type={"password"}
-          name={"password"}
-          value={form.password}
-          error={validation?.format().password?._errors.join(". ")}
-          autocomplete={"new-password"}
-          onChange={(prop, value) => onFormChange(prop, value)}
-          disabled={currentState === ViewState.SAVING}
-        />
+        {formType === FormType.REGISTER && (
+          <>
+            <FormInput
+              label={"Geslo:"}
+              type={"password"}
+              name={"password"}
+              value={form.password}
+              error={validation?.format().password?._errors.join(". ")}
+              autocomplete={"new-password"}
+              onChange={(prop, value) => onFormChange(prop, value)}
+              disabled={currentState === ViewState.SAVING}
+            />
 
-        <FormInput
-          label={"Ponovi geslo:"}
-          type={"password"}
-          name={"passwordConfirmation"}
-          error={validation?.format().passwordConfirmation?._errors.join(". ")}
-          value={form.passwordConfirmation}
-          onChange={(prop, value) => onFormChange(prop, value)}
-          disabled={currentState === ViewState.SAVING}
-        />
+            <FormInput
+              label={"Ponovi geslo:"}
+              type={"password"}
+              name={"passwordConfirmation"}
+              error={validation?.format().passwordConfirmation?._errors.join(". ")}
+              value={form.passwordConfirmation}
+              onChange={(prop, value) => onFormChange(prop, value)}
+              disabled={currentState === ViewState.SAVING}
+            />
+          </>
+        )}
 
         <div className={"mt-6 prose"}>
           <label className={"flex flex-row items-center"}>
@@ -189,17 +239,33 @@ function RegisterForm({ onSuccess = () => {} }) {
         </div>
       </form>
 
-      <hr className="my-10" />
+      {formType === FormType.REGISTER && (
+        <>
+          <hr className="my-10" />
+          <div className="text-center">
+            <h2 className="text-xl font-bold mb-6">Dodatni načini registracije</h2>
 
-      <div className="text-center">
-        <h2 className="text-xl font-bold mb-6">Že imaš račun?</h2>
+            <a href={`${process.env.NEXT_PUBLIC_API_URL}/auth/github/redirect?flow=register`}>
+              <button disabled={currentState === ViewState.SAVING} className="btn btn-sm btn-primary-outline">
+                <FontAwesomeIcon icon={faGithub} className={"mr-2"} />
+                Github
+              </button>
+            </a>
+          </div>
 
-        <a href="/prijava">
-          <button className="btn btn-sm btn-primary-outline" disabled={currentState === ViewState.SAVING}>
-            Prijavi se
-          </button>
-        </a>
-      </div>
+          <hr className="my-10" />
+
+          <div className="text-center">
+            <h2 className="text-xl font-bold mb-6">Že imaš račun?</h2>
+
+            <a href="/prijava">
+              <button className="btn btn-sm btn-primary-outline" disabled={currentState === ViewState.SAVING}>
+                Prijavi se
+              </button>
+            </a>
+          </div>
+        </>
+      )}
     </div>
   );
 }
@@ -229,7 +295,7 @@ export default function Page() {
 
   useEffect(() => {
     checkLogin(() => setCurrentState(PageState.REGISTER));
-  }, []);
+  }, [checkLogin]);
   return (
     <div>
       <main className={"grid grid-cols-1 gap-3"}>

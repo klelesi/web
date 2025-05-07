@@ -146,7 +146,6 @@ const PostForm = ({post}: { post?: MarkdownPost | LinkPost | null }) => {
                         disabled={!errors.success || isLoading}>{post ? 'Posodobi' : 'Objavi'}
                 </button>
             </div>
-
         </form>
 
     </Card>

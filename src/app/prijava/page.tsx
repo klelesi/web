@@ -10,6 +10,8 @@ import {z, ZodError} from "zod";
 import {AuthContext} from "@/hooks/auth-provider";
 import {useRouter} from "next/navigation";
 import {ValidationErrorResponse} from "@/interfaces";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGithub } from "@fortawesome/free-brands-svg-icons/faGithub";
 
 
 const schema = z.object({
@@ -121,6 +123,21 @@ export default function Login() {
                                             geslo?</a>
                                     </div>
                                 </form>
+
+                              <hr className="mb-10 mt-6"/>
+
+                              <div className="text-center">
+
+                                <h2 className="text-xl font-bold mb-6">Dodatni načini prijave</h2>
+
+                                <a href={`${process.env.NEXT_PUBLIC_API_URL}/auth/github/redirect?flow=login`}>
+                                  <button disabled={state === State.LOGGING_IN}
+                                          className="btn btn-sm btn-primary-outline">
+                                      <FontAwesomeIcon icon={faGithub} className={'mr-2'}/>
+                                    Github
+                                  </button>
+                                </a>
+                              </div>
 
                                 <hr className="mb-10 mt-6"/>
 
