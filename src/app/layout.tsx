@@ -10,6 +10,7 @@ import React from "react";
 config.autoAddCss = false;
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://klele.si'),
   title: "Klele.si | Kjer so dobre debate doma",
   description: "Kjer so dobre debate doma.",
   openGraph: {
