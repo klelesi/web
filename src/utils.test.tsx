@@ -1,6 +1,7 @@
 import { expect, test } from "vitest";
-import { getNumberOfCommentsText, isCurrentUserAuthor } from "@/utils";
-import { Auth, Post } from "@/interfaces";
+import { getNumberOfCommentsText, humanReadableDate, isCurrentUserAuthor, isLocked, resolveUpvoteDownvoteState } from "@/utils";
+import { Auth, Interaction, Post } from "@/interfaces";
+import { UpvoteDownvoteState } from "@/components/upvote-downvote";
 
 test("Utils: get number of comments text", () => {
   expect(getNumberOfCommentsText(0)).equals("0 komentarjev");
@@ -19,11 +20,42 @@ test("Utils: get number of comments text", () => {
 });
 
 test("Utils: is current user author", () => {
-  const auth1: Auth = { id: "12345", email: "john.doe@example.com", name: "John Doe" };
-  const auth2: Auth = { id: "54121", email: "jane.doe@example.com", name: "Jane Doe" };
+  const auth1: Auth = { id: "12345", email: "john.doe@example.com", name: "John Doe", username: "john.doe" };
+  const auth2: Auth = { id: "54121", email: "jane.doe@example.com", name: "Jane Doe", username: "john.doe" };
   const post: Post = { author: auth1 } as unknown as Post;
 
   expect(isCurrentUserAuthor(auth1, post)).equals(true);
   expect(isCurrentUserAuthor(auth2, post)).equals(false);
   expect(isCurrentUserAuthor(null, post)).equals(false);
+});
+
+test("Utils: returns human readable date", () => {
+  const today = humanReadableDate(new Date().toISOString());
+  expect(today).toContain("danes ob");
+
+  const yesterday = new Date();
+  yesterday.setDate(new Date().getDate() - 1);
+  expect(humanReadableDate(yesterday.toISOString())).toContain("včeraj ob");
+});
+
+test("Utils: checks locked", () => {
+  expect(isLocked({ lockedAt: null } as unknown as Post)).equals(false);
+  expect(isLocked({ lockedAt: "2024-10-10 10:10:00" } as unknown as Post)).equals(true);
+});
+
+test("Utils: resolves interactions for upvote/downvote state", () => {
+  //  Default is indifferent
+  expect(resolveUpvoteDownvoteState([])).equals(UpvoteDownvoteState.INDIFFERENT);
+
+  expect(resolveUpvoteDownvoteState([{ type: "view" } as unknown as Interaction])).equals(UpvoteDownvoteState.INDIFFERENT);
+  expect(resolveUpvoteDownvoteState([{ type: "upvote" } as unknown as Interaction])).equals(UpvoteDownvoteState.UPVOTE);
+  expect(resolveUpvoteDownvoteState([{ type: "downvote" } as unknown as Interaction])).equals(UpvoteDownvoteState.DOWNVOTE);
+
+  //  First interaction is the fallback, if multiple interactions are present
+  expect(resolveUpvoteDownvoteState([{ type: "downvote" } as unknown as Interaction, { type: "upvote" } as unknown as Interaction])).equals(
+    UpvoteDownvoteState.DOWNVOTE,
+  );
+  expect(resolveUpvoteDownvoteState([{ type: "upvote" } as unknown as Interaction, { type: "downvote" } as unknown as Interaction])).equals(
+    UpvoteDownvoteState.UPVOTE,
+  );
 });
