@@ -13,6 +13,7 @@ import PostUserInteractions from "@/components/post-user-interactions";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "@/hooks/auth-provider";
 import useUserInteractionApi from "@/hooks/useUserInteractionApi";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons/faArrowLeft";
 
 export const ShowPost = ({ post }: { post: Post }) => {
   const { currentUser } = useContext(AuthContext);
@@ -36,6 +37,12 @@ export const ShowPost = ({ post }: { post: Post }) => {
 
   return (
     <>
+      <a href={"/"}>
+        <button className="btn btn-link btn-sm text-red">
+          <FontAwesomeIcon icon={faArrowLeft} className={"mr-2"} />
+          Nazaj
+        </button>
+      </a>
       <Card>
         <>
           {post.postType == PostType.MARKDOWN ? <MarkdownPost post={copy as MarkdownPostInterface} /> : null}
