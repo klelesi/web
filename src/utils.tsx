@@ -4,6 +4,7 @@ import { isYesterday } from "date-fns/isYesterday";
 import { format } from "date-fns";
 import { Auth, Comment, Interaction, Post } from "@/interfaces";
 import { UpvoteDownvoteState } from "@/components/upvote-downvote";
+import { sl } from "date-fns/locale/sl";
 
 export const getNumberOfCommentsText = (numberOfComments: number): string => {
   let text = "komentarjev";
@@ -38,7 +39,7 @@ export const humanReadableDate = (dateISO: string): string => {
     formatString = "'včeraj ob' HH:mm";
   }
 
-  return format(date, formatString);
+  return format(date, formatString, { locale: sl });
 };
 
 export const isCurrentUserAuthor = (auth: Auth | null, item: Post | Comment) => {
