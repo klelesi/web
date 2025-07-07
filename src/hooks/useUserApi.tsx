@@ -12,9 +12,9 @@ export default function useUserApi() {
     return client.get("/user");
   }, [client]);
 
-  const getPermissions = () => {
+  const getPermissions = useCallback(() => {
     return client.get("/user/permissions");
-  };
+  }, [client]);
 
   const getNotifications = useCallback(() => {
     return client.get("/user/notifications");
@@ -38,7 +38,7 @@ export default function useUserApi() {
     return client.put("/user", data);
   };
 
-  const register = (data: { name: string; password?: string; email: string, username:string, token?:string }) => {
+  const register = (data: { name: string; password?: string; email: string; username: string; token?: string }) => {
     return client.post("/auth/register", data);
   };
 
@@ -58,17 +58,20 @@ export default function useUserApi() {
     return client.post("/auth/logout", {});
   };
 
-  const checkLogin = useCallback((callback = () => {}) => {
-    getProfile().then(
-      (success) => {
-        loginUser(success.data.data);
-        router.push("/");
-      },
-      () => {
-        callback();
-      },
-    );
-  }, [getProfile, loginUser, router]);
+  const checkLogin = useCallback(
+    (callback = () => {}) => {
+      getProfile().then(
+        (success) => {
+          loginUser(success.data.data);
+          router.push("/");
+        },
+        () => {
+          callback();
+        },
+      );
+    },
+    [getProfile, loginUser, router],
+  );
 
   return {
     getProfile,
